@@ -1,9 +1,9 @@
 FROM alpine:3.8 
 LABEL maintainer "Alexander Pehm <alexander@alexanderpehm.at>"
 
-RUN apk add --no-cache bash make curl tar gzip tzdata
+RUN apk add --no-cache bash make curl tar gzip tzdata vim
 ENV HOME /home/user
-ENV EDITOR vi
+ENV EDITOR vim
 ENV TODOTXT_DEFAULT_ACTION ls
 RUN addgroup -g 1000 -S user && \
     adduser -u 1000 -S user -G user -h $HOME
