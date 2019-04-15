@@ -1,9 +1,9 @@
 FROM alpine:3.8 
 LABEL maintainer "Alexander Pehm <alexander@alexanderpehm.at>"
 
-RUN apk add --no-cache bash make curl tar gzip tzdata
+RUN apk add --no-cache bash make curl tar gzip tzdata vim
 ENV HOME /home/user
-ENV EDITOR vi
+ENV EDITOR vim
 ENV TODOTXT_DEFAULT_ACTION ls
 ENV TODOTXT_DATE_ON_ADD 1
 ENV TODOTXT_AUTO_ARCHIVE 0
