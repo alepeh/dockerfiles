@@ -5,6 +5,9 @@ RUN apk add --no-cache bash make curl tar gzip tzdata
 ENV HOME /home/user
 ENV EDITOR vi
 ENV TODOTXT_DEFAULT_ACTION ls
+ENV TODOTXT_DATE_ON_ADD 1
+ENV TODOTXT_AUTO_ARCHIVE 0
+
 RUN addgroup -g 1000 -S user && \
     adduser -u 1000 -S user -G user -h $HOME
 RUN curl -L https://github.com/todotxt/todo.txt-cli/archive/v2.11.0.tar.gz | tar xvz && \
