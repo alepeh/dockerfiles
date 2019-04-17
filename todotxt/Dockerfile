@@ -12,6 +12,8 @@ RUN addgroup -g 1000 -S user && \
     adduser -u 1000 -S user -G user -h $HOME
 RUN curl -L https://github.com/todotxt/todo.txt-cli/archive/v2.11.0.tar.gz | tar xvz && \
     cd todo.txt-cli-2.11.0 && make && make install CONFIG_DIR=$HOME
+COPY entrypoint.sh $HOME
+RUN chmod +x $HOME/entrypoint.sh
 COPY config $HOME/.todo/
 RUN mkdir /home/user/.todo.actions.d && cd /home/user/.todo.actions.d && \
     curl -L https://raw.githubusercontent.com/alepeh/todo.txt-cli/note/todo.actions.d/note > note && \
@@ -23,5 +25,5 @@ RUN mkdir $HOME/workspace
 RUN chown -R user:user $HOME 
 WORKDIR $HOME
 USER user
-ENTRYPOINT ["sh","-c"]
-CMD ["todo.sh","-d /home/user/.todo/config"]
+ENTRYPOINT ["/home/user/entrypoint.sh"]
+CMD []
