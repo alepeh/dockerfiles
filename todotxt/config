@@ -52,8 +52,8 @@ export TODO_ACTIONS_DIR="/home/user/.todo.actions.d"
 #
  export PRI_A=$LIGHT_RED        # color for A priority
  export PRI_B=$YELLOW         # color for B priority
- export PRI_C=$LIGHT_GREY    # color for C priority
-# export PRI_D=...            # define your own
+ export PRI_C=$LIGHT_BLUE    # color for C priority
+ export PRI_D=$LIGHT_GREEN            # define your own
 # export PRI_X=$WHITE         # color unless explicitly defined
 
 # There is highlighting for tasks that have been done,
@@ -63,7 +63,7 @@ export TODO_ACTIONS_DIR="/home/user/.todo.actions.d"
 
 # There is highlighting for projects and contexts.
 #
- export COLOR_PROJECT=$RED
+ export COLOR_PROJECT=$GREEN
  export COLOR_CONTEXT=$RED
 
 # === BEHAVIOR ===
