@@ -12,7 +12,7 @@ RUN pip install jrnl
 RUN mkdir $HOME/.jrnl
 RUN mkdir $HOME/workspace
 COPY jrnl $HOME/.jrnl
-COPY entrypoint.sh $HOME
+COPY entrypoint.sh $HOME/entrypoint.sh
 RUN chmod +x $HOME/entrypoint.sh
 
 RUN chown -R user:user $HOME 
