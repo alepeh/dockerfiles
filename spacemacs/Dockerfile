@@ -1,4 +1,4 @@
-FROM alepeh/emacs25-lucid:latest
+FROM alepeh/spacemacs-lucid:latest
 
 # Enable graphviz dot for
 RUN apt-get update && apt-get install graphviz
