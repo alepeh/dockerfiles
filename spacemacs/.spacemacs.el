@@ -132,7 +132,8 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-light
+   dotspacemacs-themes '(doom-one
+                         spacemacs-light
                          spacemacs-dark)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
@@ -310,11 +311,18 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+    (org-babel-do-load-languages
+      'org-babel-load-languages
+       '((shell . t)
+         (js . t)
+         (plantuml . t)
+         (dot . t)
+         (java . t)))
 
-  ;; hides leading/trailing formatting characters like *bold*, /italic/, =code=
-  (setq org-hide-emphasis-markers t)
+;; hides leading/trailing formatting characters like *bold*, /italic/, =code=
+    (setq org-hide-emphasis-markers t)
   
-  (setq org-startup-indented t)
+    (setq org-startup-indented t)
 
   (let* ((variable-tuple (cond ((x-list-fonts "Source Sans Variable") '(:font "Source Sans Variable"))
                              (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Variable."))))
@@ -351,14 +359,6 @@ you should place your code here."
   (setq org-refile-targets '((nil :maxlevel . 9)
                              (org-agenda-files :maxlevel . 9)))
 
-  (org-babel-do-load-languages
-       'org-babel-load-languages
-       '((shell . t)
-         (js . t)
-         (plantuml . t)
-         (dot . t)
-         (java . t)))
-
   (setq org-plantuml-jar-path
         (expand-file-name "~/plantuml.jar"))
 
@@ -369,7 +369,6 @@ you should place your code here."
 
 ;; Do not ask for confirmation when executing code blocks
   (setq org-confirm-babel-evaluate nil)
-
 
 ;; Set the first day of the week to Monday
 (setq calendar-week-start-day 1)
@@ -386,12 +385,6 @@ you should place your code here."
 (setq calendar-intermonth-header
       (propertize "Wk"                  ; or e.g. "KW" in Germany
                   'font-lock-face 'font-lock-keyword-face))
-
-
-;; Deft settings
-(setq deft-directory "/mnt/workspace")
-(setq deft-use-filter-string-for-filename t)
-
 
 ;; Auto sorting
 (require 'cl)
@@ -484,8 +477,11 @@ you should place your code here."
         ("blog-jekyll-all" :components ("blog-jekyll-attachments" "blog-jekyll-html"))
 
         )
-  )
+    )
   ;; Open deft on startup
+  ;; Deft settings
+  (setq deft-directory "/mnt/workspace")
+  (setq deft-use-filter-string-for-filename t)
   (deft)
 )
 
