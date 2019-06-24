@@ -486,6 +486,7 @@ you should place your code here."
   ;; Deft settings
   (setq deft-directory "/mnt/workspace")
   (setq deft-use-filter-string-for-filename t)
+  (setq deft-recursive t)
   (deft)
 )
 
