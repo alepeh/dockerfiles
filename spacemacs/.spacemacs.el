@@ -478,6 +478,10 @@ you should place your code here."
 
         )
     )
+  ;; In org 9.2 we need org-tempo to expand src and example blocks
+  ;; they have been replaced with structure templates
+  (require 'org-tempo)
+
   ;; Open deft on startup
   ;; Deft settings
   (setq deft-directory "/mnt/workspace")
