@@ -53,6 +53,8 @@ values."
      ;; syntax-checking
      ;; version-control
      theming
+     (org :variables
+       org-enable-org-journal-support t)
     )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -481,6 +483,9 @@ you should place your code here."
   ;; In org 9.2 we need org-tempo to expand src and example blocks
   ;; they have been replaced with structure templates
   (require 'org-tempo)
+
+  ;; org-journal configuration
+  (setq org-journal-dir "/mnt/workspace/journal/")
 
   ;; Open deft on startup
   ;; Deft settings
