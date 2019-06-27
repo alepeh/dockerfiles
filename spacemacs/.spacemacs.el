@@ -52,6 +52,7 @@ values."
      ;; spell-checking
      ;; syntax-checking
      ;; version-control
+     ap-org
      theming
      (org :variables
        org-enable-org-journal-support t)
@@ -322,7 +323,7 @@ you should place your code here."
          (java . t)))
 
 ;; hides leading/trailing formatting characters like *bold*, /italic/, =code=
-    (setq org-hide-emphasis-markers t)
+    ;;(setq org-hide-emphasis-markers t)
   
     (setq org-startup-indented t)
 
