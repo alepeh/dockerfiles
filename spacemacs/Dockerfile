@@ -8,7 +8,8 @@ RUN apt-get install default-jdk
 ADD plantuml.jar /home/emacs/plantuml.jar
 
 ADD ./.spacemacs.el /home/emacs/.spacemacs
-ADD ./ap-org /home/emacs/.emacs.d/private/ap-org
+# Add my custom layers
+ADD ./layers/ap-org /home/emacs/.emacs.d/private/ap-org
 
 # Install fonts
 ADD ./SourceSansVariable-Roman.ttf /usr/share/fonts/truetype

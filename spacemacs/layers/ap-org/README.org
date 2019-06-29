@@ -1,0 +1,127 @@
+#+TITLE: ap-org layer
+# Document tags are separated with "|" char
+# The example below contains 2 tags: "layer" and "web service"
+# Avaliable tags are listed in <spacemacs_root>/.ci/spacedoc-cfg.edn
+# under ":spacetools.spacedoc.config/valid-tags" section.
+#+TAGS: layer|web service
+
+# The maximum height of the logo should be 200 pixels.
+[[img/ap-org.png]]
+
+# TOC links should be GitHub style anchors.
+* Description
+This is my custom org-mode configuration.
+
+** Features:
+  - Autocomplete
+  - Lint
+  - Refactor
+  - ...
+
+* Install
+To use this configuration layer, tangle all code blocks from this file and
+add it to your =~/.spacemacs=. You will need to add =ap-org= to the existing
+=dotspacemacs-configuration-layers= list in this file.
+* Configuration
+** File Header
+Nothing to see here, just the file header that needs to make it to
+the final file.
+#+begin_src elisp :tangle packages.el
+;;; packages.el --- ap-org layer packages file for Spacemacs.
+;;
+;; Copyright (c) 2012-2018 Sylvain Benner & Contributors
+;;
+;; Author: alepeh <alexander@pehm.biz>
+;; URL: https://github.com/syl20bnr/spacemacs
+;;
+;; This file is not part of GNU Emacs.
+;;
+;;; License: GPLv3
+
+;;; Commentary:
+
+;; See the Spacemacs documentation and FAQs for instructions on how to implement
+;; a new layer:
+;;
+;;   SPC h SPC layers RET
+;;
+;;
+;; Briefly, each package to be installed or configured by this layer should be
+;; added to `ap-org-packages'. Then, for each package PACKAGE:
+;;
+;; - If PACKAGE is not referenced by any other Spacemacs layer, define a
+;;   function `ap-org/init-PACKAGE' to load and initialize the package.
+
+;; - Otherwise, PACKAGE is already referenced by another Spacemacs layer, so
+;;   define the functions `ap-org/pre-init-PACKAGE' and/or
+;;   `ap-org/post-init-PACKAGE' to customize the package as it is loaded.
+
+;;; Code:
+
+#+end_src
+** Referenced packages
+The following function lists all packages that are either installed
+by this layer or are installed by another layer but should be
+configured here.
+#+begin_src elisp :tangle packages.el
+(defconst ap-org-packages
+  '(
+   org
+))
+#+end_src
+** org mode configuration
+This function configures org-mode after it has been loaded.
+#+begin_src elisp :tangle packages.el
+(defun ap-org/post-init-org ()
+#+end_src
+*** Layout configuration
+#+begin_src elisp :tangle packages.el
+  ;; indent text corresponding with the headline
+  (setq org-startup-indented t)
+  ;; hides leading/trailing formatting characters like *bold*, /italic/, =code=
+  (setq org-hide-emphasis-markers t)
+  ;; use bullet points for all headline levels
+  (setq org-bullets-bullet-list '("○" "○" "○" "○"))
+  ;; font face and color, make sure you have the fonts installed.
+  (let* ((variable-tuple (cond ((x-list-fonts "Source Sans Variable") '(:font "Source Sans Variable"))
+                             (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Variable."))))
+        (base-font-color     (face-foreground 'default nil 'default))
+        (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+  ;; deeper levels of headlines are smaller
+  (custom-theme-set-faces 'user
+                          `(org-level-8 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-7 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-6 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-5 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+                          `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.2))))
+                          `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3))))
+                          `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.4))))
+                          `(org-document-title ((t (,@headline ,@variable-tuple :height 1.3 :underline nil))))))
+#+end_src
+*** Babel configuration
+#+begin_src elisp :tangle packages.el 
+    ;; supported languages for code blocks
+  (org-babel-do-load-languages
+    'org-babel-load-languages
+      '((shell . t)
+        (js . t)
+        (plantuml . t)
+        (dot . t)
+        (java . t)))
+#+end_src
+
+#+begin_src elisp :tangle packages.el
+  ) ;;ap-org/post-init-org ends here
+#+end_src
+* Key bindings
+
+| Key Binding | Description    |
+|-------------+----------------|
+| ~SPC x x x~ | Does thing01   |
+
+# Use GitHub URLs if you wish to link a Spacemacs documentation file or its heading.
+# Examples:
+# [[https://github.com/syl20bnr/spacemacs/blob/master/doc/VIMUSERS.org#sessions]]
+# [[https://github.com/syl20bnr/spacemacs/blob/master/layers/%2Bfun/emoji/README.org][Link to Emoji layer README.org]]
+# If space-doc-mode is enabled, Spacemacs will open a local copy of the linked file.

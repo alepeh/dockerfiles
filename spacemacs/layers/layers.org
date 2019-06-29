@@ -1,0 +1,16 @@
+* Description
+* packages.el
+#+begin_src elisp :tangle ap-org/packages.el
+
+(defun ap-org/post-init-org ()
+  (setq org-return-follows-link t
+        org-hide-emphasis-markers t
+        org-confirm-babel-evaluate nil
+        org-todo-keywords '((sequence "TODO(t)" "DOING(g)" "|" "DONE(d)")
+                            (sequence "|" "CANCELED(c)"))
+))
+
+;;; packages.el ends here
+
+#+end_src
+* Layers
