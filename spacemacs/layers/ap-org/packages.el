@@ -48,11 +48,16 @@
         )
 
 (defvar org-capture-templates (list))
-(setq org-capture-default-template "t")
+(setq org-capture-default-template "i")
 (add-to-list 'org-capture-templates
-             `("t" "Task Entry"        entry
+             `("i" "Inbox from nowhere"        entry
                (file ,org-default-inbox-file)
-               "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\n\nFrom: %a"
+               "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:"
+               :empty-lines 0))
+(add-to-list 'org-capture-templates
+             `("r" "Inbox with back-ref"        entry
+               (file ,org-default-inbox-file)
+               "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n%iFrom: %a"
                :empty-lines 0))
 
 ;; indent text corresponding with the headline
