@@ -11,13 +11,6 @@
 # TOC links should be GitHub style anchors.
 * Description
 This is my custom org-mode configuration.
-
-** Features:
-  - Autocomplete
-  - Lint
-  - Refactor
-  - ...
-
 * Install
 To use this configuration layer, tangle all code blocks from this file and
 add it to your =~/.spacemacs=. You will need to add =ap-org= to the existing
@@ -74,6 +67,36 @@ This function configures org-mode after it has been loaded.
 #+begin_src elisp :tangle packages.el
 (defun ap-org/post-init-org ()
 #+end_src
+*** Constants
+Here we define the common variables, like the default inbox file, that we use throughout the org-configuration.
+
+#+begin_src elisp :tangle packages.el
+(defvar org-default-inbox-file     "/mnt/workspace/inbox.org"         "New stuff collects in this file")
+(defvar org-default-tasks-file     "/mnt/workspace/tasks.org"         "Tasks, TODOs and little projects")
+#+end_src
+*** Agenda files
+Todos and scheduled entries.
+As they might be scattered all over the workspace, let's add all the files
+in the workspace.
+#+begin_src elisp :tangle packages.el
+(setq org-agenda-files (list
+                          "/mnt/workspace"
+                          )
+        org-agenda-default-appointment-duration 120
+        org-icalendar-combined-agenda-file "/mnt/workspace/agenda.ics"
+        org-attach-set-inherit t
+        )
+#+end_src
+*** Capture templates
+#+begin_src elisp :tangle packages.el
+(defvar org-capture-templates (list))
+(setq org-capture-default-template "t")
+(add-to-list 'org-capture-templates
+             `("t" "Task Entry"        entry
+               (file ,org-default-inbox-file)
+               "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\n\nFrom: %a"
+               :empty-lines 0))
+#+end_src
 *** Layout configuration
 #+begin_src elisp :tangle packages.el
   ;; indent text corresponding with the headline
@@ -101,6 +124,9 @@ This function configures org-mode after it has been loaded.
 #+end_src
 *** Babel configuration
 #+begin_src elisp :tangle packages.el 
+    ;; Do not ask for confirmation when executing code blocks
+  (setq org-confirm-babel-evaluate nil)
+
     ;; supported languages for code blocks
   (org-babel-do-load-languages
     'org-babel-load-languages
@@ -110,7 +136,25 @@ This function configures org-mode after it has been loaded.
         (dot . t)
         (java . t)))
 #+end_src
+***  Calendar configuration
+This is not really specific to org-mode but to emacs in general, so it could be moved out of here.
+#+begin_src elisp :tangle packages.el
+ ;; Set the first day of the week to Monday
+(setq calendar-week-start-day 1)
 
+;; Customize the emacs calendar to show week numbers
+(setq calendar-intermonth-text
+      '(propertize
+        (format "%2d"
+                (car
+                 (calendar-iso-from-absolute
+                  (calendar-absolute-from-gregorian (list month day year)))))
+        'font-lock-face 'font-lock-warning-face))
+
+(setq calendar-intermonth-header
+      (propertize "Wk"                  ; or e.g. "KW" in Germany
+                  'font-lock-face 'font-lock-keyword-face))
+#+end_src
 #+begin_src elisp :tangle packages.el
   ) ;;ap-org/post-init-org ends here
 #+end_src

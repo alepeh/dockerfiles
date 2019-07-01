@@ -36,6 +36,25 @@
 
 (defun ap-org/post-init-org ()
 
+(defvar org-default-inbox-file     "/mnt/workspace/inbox.org"         "New stuff collects in this file")
+(defvar org-default-tasks-file     "/mnt/workspace/tasks.org"         "Tasks, TODOs and little projects")
+
+(setq org-agenda-files (list
+                          "/mnt/workspace"
+                          )
+        org-agenda-default-appointment-duration 120
+        org-icalendar-combined-agenda-file "/mnt/workspace/agenda.ics"
+        org-attach-set-inherit t
+        )
+
+(defvar org-capture-templates (list))
+(setq org-capture-default-template "t")
+(add-to-list 'org-capture-templates
+             `("t" "Task Entry"        entry
+               (file ,org-default-inbox-file)
+               "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\n\nFrom: %a"
+               :empty-lines 0))
+
 ;; indent text corresponding with the headline
 (setq org-startup-indented t)
 ;; hides leading/trailing formatting characters like *bold*, /italic/, =code=
@@ -59,7 +78,10 @@
                         `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.4))))
                         `(org-document-title ((t (,@headline ,@variable-tuple :height 1.3 :underline nil))))))
 
-;; supported languages for code blocks
+;; Do not ask for confirmation when executing code blocks
+(setq org-confirm-babel-evaluate nil)
+
+  ;; supported languages for code blocks
 (org-babel-do-load-languages
   'org-babel-load-languages
     '((shell . t)
@@ -67,5 +89,21 @@
       (plantuml . t)
       (dot . t)
       (java . t)))
+
+;; Set the first day of the week to Monday
+(setq calendar-week-start-day 1)
+
+;; Customize the emacs calendar to show week numbers
+(setq calendar-intermonth-text
+      '(propertize
+        (format "%2d"
+                (car
+                 (calendar-iso-from-absolute
+                  (calendar-absolute-from-gregorian (list month day year)))))
+        'font-lock-face 'font-lock-warning-face))
+
+(setq calendar-intermonth-header
+      (propertize "Wk"                  ; or e.g. "KW" in Germany
+                  'font-lock-face 'font-lock-keyword-face))
 
 ) ;;ap-org/post-init-org ends here

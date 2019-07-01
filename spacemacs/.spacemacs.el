@@ -45,7 +45,7 @@ values."
      ;; git
      ;; markdown
      org
-     org-bullets
+     ;;org-bullets
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -321,14 +321,6 @@ you should place your code here."
 
   (setq org-image-actual-width '(300))
 
-  (setq org-agenda-files (list
-                          "/mnt/workspace"
-                          )
-        org-agenda-default-appointment-duration 120
-        org-icalendar-combined-agenda-file "/mnt/workspace/agenda.ics"
-        org-attach-set-inherit t
-        )
-
   (setq org-refile-targets '((nil :maxlevel . 9)
                              (org-agenda-files :maxlevel . 9)))
 
@@ -339,26 +331,7 @@ you should place your code here."
             (lambda ()
               (when org-inline-image-overlays
                 (org-redisplay-inline-images))))
-
-;; Do not ask for confirmation when executing code blocks
-  (setq org-confirm-babel-evaluate nil)
-
-;; Set the first day of the week to Monday
-(setq calendar-week-start-day 1)
-
-;; Customize the emacs calendar to show week numbers
-(setq calendar-intermonth-text
-      '(propertize
-        (format "%2d"
-                (car
-                 (calendar-iso-from-absolute
-                  (calendar-absolute-from-gregorian (list month day year)))))
-        'font-lock-face 'font-lock-warning-face))
-
-(setq calendar-intermonth-header
-      (propertize "Wk"                  ; or e.g. "KW" in Germany
-                  'font-lock-face 'font-lock-keyword-face))
-
+                
 ;; Auto sorting
 (require 'cl)
 (require 'dash)
