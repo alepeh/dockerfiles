@@ -1,4 +1,4 @@
-FROM alepeh/spacemacs-lucid:latest
+FROM alepeh/spacemacs-lucid:1.0
 
 # Enable graphviz dot for
 RUN apt-get update && apt-get install graphviz
