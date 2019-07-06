@@ -55,7 +55,7 @@ values."
      ap-org
      theming
      (org :variables
-       org-enable-org-journal-support t)
+      org-enable-org-journal-support t)
     )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -314,123 +314,6 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-
-  (setq org-todo-keyword-faces
-      '(("TODO" . (:foreground "blue" :weight bold)) ("STARTED" . "yellow")
-        ("CANCELED" . (:foreground "blue" :weight bold))))
-
-  (setq org-image-actual-width '(300))
-
-  (setq org-refile-targets '((nil :maxlevel . 9)
-                             (org-agenda-files :maxlevel . 9)))
-
-  (setq org-plantuml-jar-path
-        (expand-file-name "~/plantuml.jar"))
-
-  (add-hook 'org-babel-after-execute-hook
-            (lambda ()
-              (when org-inline-image-overlays
-                (org-redisplay-inline-images))))
-                
-;; Auto sorting
-(require 'cl)
-(require 'dash)
-
-(defun todo-to-int (todo)
-    (first (-non-nil
-            (mapcar (lambda (keywords)
-                      (let ((todo-seq
-                             (-map (lambda (x) (first (split-string  x "(")))
-                                   (rest keywords)))) 
-                        (cl-position-if (lambda (x) (string= x todo)) todo-seq)))
-                    org-todo-keywords))))
-
-(defun my/org-sort-key ()
-  (let* ((todo-max (apply #'max (mapcar #'length org-todo-keywords)))
-         (todo (org-entry-get (point) "TODO"))
-         (todo-int (if todo (todo-to-int todo) todo-max))
-         (priority (org-entry-get (point) "PRIORITY"))
-         (priority-int (if priority (string-to-char priority) org-default-priority)))
-    (format "%03d %03d" todo-int priority-int)
-    ))
-
-(defun my/org-sort-entries ()
-  (interactive)
-  (org-sort-entries nil ?f #'my/org-sort-key))
-
-
-;; Export using Jekyll
-(defun org-export-table-cell-starts-colgroup-p (table-cell info))
-(defun org-export-table-cell-ends-colgroup-p (table-cell info))
-
-(setq org-publish-project-alist
-      '(
-	("all-org-files-to-html"
-         ;; Path to your org files.
-         :base-directory "/mnt/workspace/"
-         :base-extension "org"
-         :publishing-function org-html-publish-to-html
-         :publishing-directory "/mnt/workspace/exports/"
-	)
-        ("all-org-attachments"
-         :base-directory "/mnt/workspace/data/"
-         :base-extension "css\\|js\\|png\\|jpeg\\|jpg\\|gif\\|pdf\\|mp3\\|ogg"
-         :publishing-directory "/mnt/workspace/exports/data/"
-         :recursive t
-         :publishing-function org-publish-attachment)
-        ("all-org-and-attachments" :components ("all-org-files-to-html" "all-org-attachments"))
-        ("rfk-jekyll-html"
-         ;; Path to your org files.
-         :base-directory "/mnt/workspace/rfk/web/"
-         :base-extension "org"
-
-         ;; Path to your Jekyll project.
-         :publishing-directory "/mnt/workspace/rfk/jekyll/"
-         :recursive t
-         :publishing-function org-html-publish-to-html
-         :headline-levels 4 
-         :html-extension "html"
-         :body-only t ;; Only export section between <body> </body>
-         )
-        ("rfk-jekyll-attachments"
-         :base-directory "/mnt/workspace/rfk/web/"
-         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php"
-         :publishing-directory "/mnt/workspace/rfk/jekyll/"
-         :recursive t
-         :publishing-function org-publish-attachment)
-        ("rfk-jekyll-all" :components ("rfk-jekyll-html" "rfk-jekyll-attachments"))
-
-        ("blog-jekyll-html"
-         ;; Path to your org files.
-         :base-directory "/mnt/workspace/alepeh/blog/source/"
-         :base-extension "org"
-
-         ;; Path to your Jekyll project.
-         :publishing-directory "/mnt/workspace/alepeh/blog/jekyll/thinkspace/"
-         :recursive t
-         :publishing-function org-html-publish-to-html
-         :headline-levels 4 
-         :html-extension "html"
-         :with-toc nil ;; Otherwise using headkines will break the layout
-         :body-only t ;; Only export section between <body> </body>
-         )
-        ("blog-jekyll-attachments"
-         :base-directory "/mnt/workspace/alepeh/blog/source/"
-         :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php"
-         :publishing-directory "/mnt/workspace/alepeh/blog/jekyll/thinkspace/"
-         :recursive t
-         :publishing-function org-publish-attachment)
-        ("blog-jekyll-all" :components ("blog-jekyll-attachments" "blog-jekyll-html"))
-
-        )
-    )
-  ;; In org 9.2 we need org-tempo to expand src and example blocks
-  ;; they have been replaced with structure templates
-  (require 'org-tempo)
-
-  ;; org-journal configuration
-  (setq org-journal-dir "/mnt/workspace/journal/")
-
   ;; Open deft on startup
   ;; Deft settings
   (setq deft-directory "/mnt/workspace")
@@ -438,7 +321,5 @@ you should place your code here."
   (setq deft-recursive t)
   (deft)
 )
-
-
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.

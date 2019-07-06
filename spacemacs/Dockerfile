@@ -21,3 +21,6 @@ RUN chown -R 1000:1000 /home/emacs/
 
 # Install all packages
 RUN asEnvUser emacs -batch -u ${UNAME} -kill
+
+# Delete all compiled elisp files due to loading issues, see e.g. https://github.com/syl20bnr/spacemacs/issues/11801
+RUN find /home/emacs/.emacs.d/elpa/ -name "*.elc" -print0 | xargs -0 rm
