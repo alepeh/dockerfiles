@@ -61,6 +61,9 @@
                "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\nFrom: %a"
                :empty-lines 0))
 
+(setq org-refile-use-outline-path 'file
+      org-outline-path-complete-in-steps nil)
+      
 (setq org-refile-targets '((org-default-incubate-file :level . 0)
                            (org-default-tasks-file :level . 0)))
 
@@ -229,6 +232,6 @@
   (require 'org-tempo)
 
   ;; org-journal configuration
-  (setq org-journal-dir "/mnt/workspace/journal/")
+  (setq org-journal-dir "/mnt/workspace/")
 
 ) ;;ap-org/post-init-org ends here

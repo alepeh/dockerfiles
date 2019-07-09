@@ -105,7 +105,10 @@ in the workspace.
 #+end_src
 *** Refile targets
 Possible targets for refiling from the inbox are the following files.
+The first two variable changes are necessary to allow refiling to top-level destinations.
 #+begin_src elisp :tangle packages.el
+(setq org-refile-use-outline-path 'file
+      org-outline-path-complete-in-steps nil)
 (setq org-refile-targets '((org-default-incubate-file :level . 0)
                            (org-default-tasks-file :level . 0)))
 #+end_src
