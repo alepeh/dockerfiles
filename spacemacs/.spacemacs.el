@@ -1,6 +1,7 @@
 ;; -*- mode: emacs-lisp -*-
 ;; This file is loaded by Spacemacs at startup.
 ;; It must be stored in your home directory.
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 (defun dotspacemacs/layers ()
   "Configuration Layers declaration.
@@ -318,7 +319,6 @@ you should place your code here."
   ;; Deft settings
   (setq deft-directory "/mnt/workspace")
   (setq deft-use-filter-string-for-filename t)
-  (setq deft-recursive t)
   (deft)
 )
 ;; Do not write anything past this comment. This is where Emacs will

@@ -40,6 +40,7 @@
 (defvar org-default-tasks-file     "/mnt/workspace/tasks.org"         "Tasks, TODOs and little projects")
 (defvar org-default-incubate-file  "/mnt/workspace/incubating.org"   "Stuff that's not ready yet")
 
+(setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
 (setq org-agenda-files (list
                           "/mnt/workspace"
                           )
@@ -63,7 +64,6 @@
 
 (setq org-refile-use-outline-path 'file
       org-outline-path-complete-in-steps nil)
-      
 (setq org-refile-targets '((org-default-incubate-file :level . 0)
                            (org-default-tasks-file :level . 0)))
 

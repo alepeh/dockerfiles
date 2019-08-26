@@ -80,6 +80,7 @@ Todos and scheduled entries.
 As they might be scattered all over the workspace, let's add all the files
 in the workspace.
 #+begin_src elisp :tangle packages.el
+(setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
 (setq org-agenda-files (list
                           "/mnt/workspace"
                           )
@@ -286,7 +287,7 @@ This is not really specific to org-mode but to emacs in general, so it could be 
   (require 'org-tempo)
 
   ;; org-journal configuration
-  (setq org-journal-dir "/mnt/workspace/journal/")
+  (setq org-journal-dir "/mnt/workspace/")
 #+end_src
 
 #+begin_src elisp :tangle packages.el
