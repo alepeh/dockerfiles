@@ -1,5 +1,6 @@
 #!/bin/bash
 # Preconditions
+# emacs (tested with 26.3), installed via brew cask install emacs
 # java (for plantuml)
 # a symlink to your main org-files from /mnt/workspace (e.g. ln -s ~/nas/drive/org/ /mnt/workspace)
 # Clone the spacemacs development branch

@@ -88,7 +88,8 @@
                         `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.2))))
                         `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3))))
                         `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.4))))
-                        `(org-document-title ((t (,@headline ,@variable-tuple :height 1.3 :underline nil))))))
+                        `(org-document-title ((t (,@headline ,@variable-tuple :height 1.3 :underline nil))))
+                        '(deft-title-face ((t (:inherit default :weight bold))))))
 
 ;; Do not ask for confirmation when executing code blocks
 (setq org-confirm-babel-evaluate nil)
