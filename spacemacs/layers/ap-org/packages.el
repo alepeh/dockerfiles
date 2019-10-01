@@ -134,7 +134,7 @@
             (lambda ()
               (when org-inline-image-overlays
                 (org-redisplay-inline-images))))
-                
+
 ;; Auto sorting
 (require 'cl)
 (require 'dash)
@@ -168,13 +168,13 @@
 
 (setq org-publish-project-alist
       '(
-	("all-org-files-to-html"
+  ("all-org-files-to-html"
          ;; Path to your org files.
          :base-directory "/mnt/workspace/"
          :base-extension "org"
          :publishing-function org-html-publish-to-html
          :publishing-directory "/mnt/workspace/exports/"
-	)
+  )
         ("all-org-attachments"
          :base-directory "/mnt/workspace/data/"
          :base-extension "css\\|js\\|png\\|jpeg\\|jpg\\|gif\\|pdf\\|mp3\\|ogg"
@@ -232,6 +232,9 @@
   (require 'org-tempo)
 
   ;; org-journal configuration
+  (setq org-journal-file-format "%Y%m%d.org")
   (setq org-journal-dir "/mnt/workspace/")
+  (setq org-journal-date-format "%Y-%m-%d, %A")
+  (setq org-journal-file-type 'yearly)
 
 ) ;;ap-org/post-init-org ends here
