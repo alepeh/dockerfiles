@@ -317,7 +317,7 @@ explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
   ;; Open deft on startup
   ;; Deft settings
-  (setq deft-directory "/mnt/workspace")
+  (setq deft-directory (getenv "SPACEMACS_WORKSPACE"))
   (setq deft-use-filter-string-for-filename t)
   (deft)
 )

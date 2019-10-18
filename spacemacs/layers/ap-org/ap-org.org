@@ -71,9 +71,10 @@ This function configures org-mode after it has been loaded.
 Here we define the common variables, like the default inbox file, that we use throughout the org-configuration.
 
 #+begin_src elisp :tangle packages.el
-(defvar org-default-inbox-file     "/mnt/workspace/inbox.org"         "New stuff collects in this file")
-(defvar org-default-tasks-file     "/mnt/workspace/tasks.org"         "Tasks, TODOs and little projects")
-(defvar org-default-incubate-file  "/mnt/workspace/incubating.org"   "Stuff that's not ready yet")
+(defvar spacemacs-workspace        (getenv "SPACEMACS_WORKSPACE"))
+(defvar org-default-inbox-file     (concat spacemacs-workspace "/inbox.org")         "New stuff collects in this file")
+(defvar org-default-tasks-file     (concat spacemacs-workspace "/tasks.org")         "Tasks, TODOs and little projects")
+(defvar org-default-incubate-file  (concat spacemacs-workspace "/incubating.org")    "Stuff that's not ready yet")
 #+end_src
 *** Agenda files
 Todos and scheduled entries.
@@ -82,10 +83,10 @@ in the workspace.
 #+begin_src elisp :tangle packages.el
 (setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
 (setq org-agenda-files (list
-                          "/mnt/workspace"
+                          spacemacs-workspace
                           )
         org-agenda-default-appointment-duration 120
-        org-icalendar-combined-agenda-file "/mnt/workspace/agenda.ics"
+        org-icalendar-combined-agenda-file (concat spacemacs-workspace "/agenda.ics")
         org-attach-set-inherit t
         )
 #+end_src
@@ -174,124 +175,167 @@ This is not really specific to org-mode but to emacs in general, so it could be 
 #+end_src
 *** Misc
 #+begin_src elisp :tangle packages.el
-   (setq org-todo-keyword-faces
-        '(("TODO" . (:foreground "white" :weight bold)) ("STARTED" . "yellow")
-          ("DONE" . (:foreground "green" :weight bold))))
+     (setq org-todo-keyword-faces
+          '(("TODO" . (:foreground "white" :weight bold)) ("STARTED" . "yellow")
+            ("DONE" . (:foreground "green" :weight bold))))
 
-    (setq org-image-actual-width '(300))
+      (setq org-image-actual-width '(300))
 
-    ;;(setq org-refile-targets '((nil :maxlevel . 9)
-    ;;(org-agenda-files :maxlevel . 9)))
+      ;;(setq org-refile-targets '((nil :maxlevel . 9)
+      ;;(org-agenda-files :maxlevel . 9)))
 
-    (setq org-plantuml-jar-path
-          (expand-file-name "~/plantuml.jar"))
+      (setq org-plantuml-jar-path
+            (expand-file-name "~/plantuml.jar"))
 
-    (add-hook 'org-babel-after-execute-hook
-              (lambda ()
-                (when org-inline-image-overlays
-                  (org-redisplay-inline-images))))
-                
-  ;; Auto sorting
-  (require 'cl)
-  (require 'dash)
+      (add-hook 'org-babel-after-execute-hook
+                (lambda ()
+                  (when org-inline-image-overlays
+                    (org-redisplay-inline-images))))
 
-  (defun todo-to-int (todo)
-      (first (-non-nil
-              (mapcar (lambda (keywords)
-                        (let ((todo-seq
-                               (-map (lambda (x) (first (split-string  x "(")))
-                                     (rest keywords)))) 
-                          (cl-position-if (lambda (x) (string= x todo)) todo-seq)))
-                      org-todo-keywords))))
+    ;; Auto sorting
+    (require 'cl)
+    (require 'dash)
 
-  (defun my/org-sort-key ()
-    (let* ((todo-max (apply #'max (mapcar #'length org-todo-keywords)))
-           (todo (org-entry-get (point) "TODO"))
-           (todo-int (if todo (todo-to-int todo) todo-max))
-           (priority (org-entry-get (point) "PRIORITY"))
-           (priority-int (if priority (string-to-char priority) org-default-priority)))
-      (format "%03d %03d" todo-int priority-int)
-      ))
+    (defun todo-to-int (todo)
+        (first (-non-nil
+                (mapcar (lambda (keywords)
+                          (let ((todo-seq
+                                 (-map (lambda (x) (first (split-string  x "(")))
+                                       (rest keywords)))) 
+                            (cl-position-if (lambda (x) (string= x todo)) todo-seq)))
+                        org-todo-keywords))))
 
-  (defun my/org-sort-entries ()
-    (interactive)
-    (org-sort-entries nil ?f #'my/org-sort-key))
+    (defun my/org-sort-key ()
+      (let* ((todo-max (apply #'max (mapcar #'length org-todo-keywords)))
+             (todo (org-entry-get (point) "TODO"))
+             (todo-int (if todo (todo-to-int todo) todo-max))
+             (priority (org-entry-get (point) "PRIORITY"))
+             (priority-int (if priority (string-to-char priority) org-default-priority)))
+        (format "%03d %03d" todo-int priority-int)
+        ))
+
+    (defun my/org-sort-entries ()
+      (interactive)
+      (org-sort-entries nil ?f #'my/org-sort-key))
 
 
-  ;; Export using Jekyll
-  (defun org-export-table-cell-starts-colgroup-p (table-cell info))
-  (defun org-export-table-cell-ends-colgroup-p (table-cell info))
+    ;; Export using Jekyll
+    (defun org-export-table-cell-starts-colgroup-p (table-cell info))
+    (defun org-export-table-cell-ends-colgroup-p (table-cell info))
 
-  (setq org-publish-project-alist
-        '(
-    ("all-org-files-to-html"
-           ;; Path to your org files.
-           :base-directory "/mnt/workspace/"
-           :base-extension "org"
-           :publishing-function org-html-publish-to-html
-           :publishing-directory "/mnt/workspace/exports/"
-    )
-          ("all-org-attachments"
-           :base-directory "/mnt/workspace/data/"
-           :base-extension "css\\|js\\|png\\|jpeg\\|jpg\\|gif\\|pdf\\|mp3\\|ogg"
-           :publishing-directory "/mnt/workspace/exports/data/"
-           :recursive t
-           :publishing-function org-publish-attachment)
-          ("all-org-and-attachments" :components ("all-org-files-to-html" "all-org-attachments"))
-          ("rfk-jekyll-html"
-           ;; Path to your org files.
-           :base-directory "/mnt/workspace/rfk/web/"
-           :base-extension "org"
-
-           ;; Path to your Jekyll project.
-           :publishing-directory "/mnt/workspace/rfk/jekyll/"
-           :recursive t
-           :publishing-function org-html-publish-to-html
-           :headline-levels 4 
-           :html-extension "html"
-           :body-only t ;; Only export section between <body> </body>
-           )
-          ("rfk-jekyll-attachments"
-           :base-directory "/mnt/workspace/rfk/web/"
-           :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php"
-           :publishing-directory "/mnt/workspace/rfk/jekyll/"
-           :recursive t
-           :publishing-function org-publish-attachment)
-          ("rfk-jekyll-all" :components ("rfk-jekyll-html" "rfk-jekyll-attachments"))
-
-          ("blog-jekyll-html"
-           ;; Path to your org files.
-           :base-directory "/mnt/workspace/alepeh/blog/source/"
-           :base-extension "org"
-
-           ;; Path to your Jekyll project.
-           :publishing-directory "/mnt/workspace/alepeh/blog/jekyll/thinkspace/"
-           :recursive t
-           :publishing-function org-html-publish-to-html
-           :headline-levels 4 
-           :html-extension "html"
-           :with-toc nil ;; Otherwise using headkines will break the layout
-           :body-only t ;; Only export section between <body> </body>
-           )
-          ("blog-jekyll-attachments"
-           :base-directory "/mnt/workspace/alepeh/blog/source/"
-           :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php"
-           :publishing-directory "/mnt/workspace/alepeh/blog/jekyll/thinkspace/"
-           :recursive t
-           :publishing-function org-publish-attachment)
-          ("blog-jekyll-all" :components ("blog-jekyll-attachments" "blog-jekyll-html"))
-
-          )
+    (setq org-publish-project-alist
+          '(
+      ("all-org-files-to-html"
+             ;; Path to your org files.
+             :base-directory spacemacs-workspace 
+             :base-extension "org"
+             :publishing-function org-html-publish-to-html
+             :publishing-directory (concat spacemacs-workspace "/exports/")
       )
-    ;; In org 9.2 we need org-tempo to expand src and example blocks
-    ;; they have been replaced with structure templates
-    (require 'org-tempo)
+            ("all-org-attachments"
+             :base-directory (concat spacemacs-workspace "/data/")
+             :base-extension "css\\|js\\|png\\|jpeg\\|jpg\\|gif\\|pdf\\|mp3\\|ogg"
+             :publishing-directory (concat spacemacs-workspace "/exports/data/")
+             :recursive t
+             :publishing-function org-publish-attachment)
+            ("all-org-and-attachments" :components ("all-org-files-to-html" "all-org-attachments"))
+            ("rfk-jekyll-html"
+             ;; Path to your org files.
+             :base-directory (concat spacemacs-workspace "/rfk/web/")
+             :base-extension "org"
 
-    ;; org-journal configuration
-    (setq org-journal-file-format "%Y%m%d.org")
-    (setq org-journal-dir "/mnt/workspace/")
-    (setq org-journal-date-format "%Y-%m-%d, %A")
-    (setq org-journal-file-type 'yearly)
+             ;; Path to your Jekyll project.
+             :publishing-directory (concat spacemacs-workspace "/rfk/jekyll/")
+             :recursive t
+             :publishing-function org-html-publish-to-html
+             :headline-levels 4 
+             :html-extension "html"
+             :body-only t ;; Only export section between <body> </body>
+             )
+            ("rfk-jekyll-attachments"
+             :base-directory (concat spacemacs-workspace "/rfk/web/")
+             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php"
+             :publishing-directory (concat spacemacs-workspace "/rfk/jekyll/")
+             :recursive t
+             :publishing-function org-publish-attachment)
+            ("rfk-jekyll-all" :components ("rfk-jekyll-html" "rfk-jekyll-attachments"))
+
+            ("blog-jekyll-html"
+             ;; Path to your org files.
+             :base-directory (concat spacemacs-workspace "/alepeh/blog/source/")
+             :base-extension "org"
+
+             ;; Path to your Jekyll project.
+             :publishing-directory (concat spacemacs-workspace "/alepeh/blog/jekyll/thinkspace/")
+             :recursive t
+             :publishing-function org-html-publish-to-html
+             :headline-levels 4 
+             :html-extension "html"
+             :with-toc nil ;; Otherwise using headkines will break the layout
+             :body-only t ;; Only export section between <body> </body>
+             )
+            ("blog-jekyll-attachments"
+             :base-directory (concat spacemacs-workspace "/alepeh/blog/source/")
+             :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php"
+             :publishing-directory (concat spacemacs-workspace "alepeh/blog/jekyll/thinkspace/")
+             :recursive t
+             :publishing-function org-publish-attachment)
+            ("blog-jekyll-all" :components ("blog-jekyll-attachments" "blog-jekyll-html"))
+
+            )
+        )
+      ;; In org 9.2 we need org-tempo to expand src and example blocks
+      ;; they have been replaced with structure templates
+      (require 'org-tempo)
+
+      ;; org-journal configuration
+      (setq org-journal-file-format "%Y%m%d.org")
+      (setq org-journal-dir spacemacs-workspace)
+      (setq org-journal-date-format "%Y-%m-%d, %A")
+      (setq org-journal-file-type 'yearly)
+
+      ;;drag and drop configuration
+      ;; http://kitchingroup.cheme.cmu.edu/blog/2015/07/10/Drag-images-and-files-onto-org-mode-and-insert-a-link-to-them/
+      (defun my-dnd-func (event)
+  (interactive "e")
+  (goto-char (nth 1 (event-start event)))
+  (x-focus-frame nil)
+  (let* ((payload (car (last event)))
+         (type (car payload))
+         (fname (cadr payload))
+         (img-regexp "\\(png\\|jp[e]?g\\)\\>"))
+    (cond
+     ;; insert image link
+     ((and  (eq 'drag-n-drop (car event))
+            (eq 'file type)
+            (string-match img-regexp fname))
+      (insert (format "[[%s]]" fname))
+      (org-display-inline-images t t))
+     ;; insert image link with caption
+     ((and  (eq 'C-drag-n-drop (car event))
+            (eq 'file type)
+            (string-match img-regexp fname))
+      (insert "#+ATTR_ORG: :width 300\n")
+      (insert (concat  "#+CAPTION: " (read-input "Caption: ") "\n"))
+      (insert (format "[[%s]]" fname))
+      (org-display-inline-images t t))
+     ;; C-drag-n-drop to open a file
+     ((and  (eq 'C-drag-n-drop (car event))
+            (eq 'file type))
+      (find-file fname))
+     ((and (eq 'M-drag-n-drop (car event))
+           (eq 'file type))
+      (insert (format "[[attachfile:%s]]" fname)))
+     ;; regular drag and drop on file
+     ((eq 'file type)
+      (insert (format "[[%s]]\n" fname)))
+     (t
+      (error "I am not equipped for dnd on %s" payload)))))
+
+
+(define-key org-mode-map (kbd "<drag-n-drop>") 'my-dnd-func)
+(define-key org-mode-map (kbd "<C-drag-n-drop>") 'my-dnd-func)
+(define-key org-mode-map (kbd "<M-drag-n-drop>") 'my-dnd-func) 
 #+end_src
 
 #+begin_src elisp :tangle packages.el
