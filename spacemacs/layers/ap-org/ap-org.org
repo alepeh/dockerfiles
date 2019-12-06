@@ -173,6 +173,11 @@ This is not really specific to org-mode but to emacs in general, so it could be 
       (propertize "Wk"                  ; or e.g. "KW" in Germany
                   'font-lock-face 'font-lock-keyword-face))
 #+end_src
+*** Org-drill
+Flash-Cards and spaced-repetition for org-mode
+#+begin_src elisp :tangle packages.el
+(require 'org-drill)
+#+end_src
 *** Misc
 #+begin_src elisp :tangle packages.el
      (setq org-todo-keyword-faces

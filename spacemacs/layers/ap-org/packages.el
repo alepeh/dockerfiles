@@ -120,6 +120,8 @@
       (propertize "Wk"                  ; or e.g. "KW" in Germany
                   'font-lock-face 'font-lock-keyword-face))
 
+(require 'org-drill)
+
 (setq org-todo-keyword-faces
           '(("TODO" . (:foreground "white" :weight bold)) ("STARTED" . "yellow")
             ("DONE" . (:foreground "green" :weight bold))))
