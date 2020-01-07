@@ -5,7 +5,7 @@
 # Clone the spacemacs development branch
 git clone --single-branch --branch develop git@github.com:syl20bnr/spacemacs.git ~/.emacs.d
 
-# Copy the plantuml binary
+# Copy the plantuml binary (version 1.2019.13)
 cp ./plantuml.jar ~
 
 # Copy the spacemacs config file
