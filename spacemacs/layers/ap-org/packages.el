@@ -41,6 +41,9 @@
 (defvar org-default-tasks-file     (concat spacemacs-workspace "/tasks.org")         "Tasks, TODOs and little projects")
 (defvar org-default-incubate-file  (concat spacemacs-workspace "/incubating.org")    "Stuff that's not ready yet")
 
+(spacemacs/set-leader-keys "oo" 'hydra-organizer/body)
+(spacemacs/set-leader-keys "oz" 'hydra-zoom/body)
+
 (setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
 (setq org-agenda-files (list
                           spacemacs-workspace
@@ -49,6 +52,9 @@
         org-icalendar-combined-agenda-file (concat spacemacs-workspace "/agenda.ics")
         org-attach-set-inherit t
         )
+
+(setq org-lowest-priority ?D)
+(setq org-default-priority ?E)
 
 (defvar org-capture-templates (list))
 (setq org-capture-default-template "i")
@@ -138,6 +144,26 @@
   (setq org-brain-title-max-length 12)
   (setq org-brain-include-file-entries nil
         org-brain-file-entries-use-title nil))
+
+(defhydra hydra-organizer (nil nil)
+"
+^Navigate^      ^Agenda^          ^Go To^
+^^^^^^^--------------------------------------------
+_k_: ↑ previous _t_: All Todos    _g i_: Inbox
+_j_: ↓ next
+"
+  ("t" org-todo-list)
+  ("g i" (find-file-other-window org-default-inbox-file))
+  ("<up>" org-previous-visible-heading)
+  ("<down>" org-next-visible-heading)
+  ("k" org-previous-visible-heading)
+  ("j" org-next-visible-heading)
+)
+
+(defhydra hydra-zoom (nil nil)
+  "zoom2"
+  ("g" text-scale-increase "in")
+  ("l" text-scale-decrease "out"))
 
 (setq org-todo-keyword-faces
           '(("TODO" . (:foreground "white" :weight bold)) ("STARTED" . "yellow")

@@ -71,10 +71,18 @@ This function configures org-mode after it has been loaded.
 Here we define the common variables, like the default inbox file, that we use throughout the org-configuration.
 
 #+begin_src elisp :tangle packages.el
-(defvar spacemacs-workspace        (getenv "SPACEMACS_WORKSPACE"))
-(defvar org-default-inbox-file     (concat spacemacs-workspace "/inbox.org")         "New stuff collects in this file")
-(defvar org-default-tasks-file     (concat spacemacs-workspace "/tasks.org")         "Tasks, TODOs and little projects")
-(defvar org-default-incubate-file  (concat spacemacs-workspace "/incubating.org")    "Stuff that's not ready yet")
+  (defvar spacemacs-workspace        (getenv "SPACEMACS_WORKSPACE"))
+  (defvar org-default-inbox-file     (concat spacemacs-workspace "/inbox.org")         "New stuff collects in this file")
+  (defvar org-default-tasks-file     (concat spacemacs-workspace "/tasks.org")         "Tasks, TODOs and little projects")
+  (defvar org-default-incubate-file  (concat spacemacs-workspace "/incubating.org")    "Stuff that's not ready yet")
+#+end_src
+*** Key bindings
+Spacemacs reserves =SPC o= and =SPC m o= for the user, so those
+are guaranteed to never conflict with default key bindings.
+We can use them to bind our [[Hydras]].
+#+begin_src elisp :tangle packages.el
+(spacemacs/set-leader-keys "oo" 'hydra-organizer/body)
+(spacemacs/set-leader-keys "oz" 'hydra-zoom/body)
 #+end_src
 *** Agenda files
 Todos and scheduled entries.
@@ -89,6 +97,16 @@ in the workspace.
         org-icalendar-combined-agenda-file (concat spacemacs-workspace "/agenda.ics")
         org-attach-set-inherit t
         )
+#+end_src
+*** Todos configuration
+**** Priorities
+By default there are only the priorities A,B,C.
+If a todo headline has no priority cookie, it is assumed to be B, leading to weird sort behaviour.
+I want everything I work on today to have A, tomorrow gets B, next week C.
+Occassionally I also need D if its farther away. Everything else means someday, so it should sort last.
+#+begin_src elisp :tangle packages.el
+(setq org-lowest-priority ?D)
+(setq org-default-priority ?E)
 #+end_src
 *** Capture templates
 #+begin_src elisp :tangle packages.el
@@ -197,6 +215,34 @@ Flash-Cards and spaced-repetition for org-mode
   (setq org-brain-include-file-entries nil
         org-brain-file-entries-use-title nil))
 #+end_src
+*** Hydras
+[[https://github.com/abo-abo/hydra][Github]] The hydra package allows to define bindings for related commands that can be
+executed in a sequence.
+[[Key bindings]] are defined above.
+See [[http://howardism.org/Technical/Emacs/getting-more-boxes-done.html][here]] for useful refile hydras.
+
+#+begin_src elisp :tangle packages.el 
+  (defhydra hydra-organizer (nil nil)
+  "
+  ^Navigate^      ^Agenda^          ^Go To^
+  ^^^^^^^--------------------------------------------
+  _k_: ↑ previous _t_: All Todos    _g i_: Inbox
+  _j_: ↓ next
+  "
+    ("t" org-todo-list)
+    ("g i" (find-file-other-window org-default-inbox-file))
+    ("<up>" org-previous-visible-heading)
+    ("<down>" org-next-visible-heading)
+    ("k" org-previous-visible-heading)
+    ("j" org-next-visible-heading)
+  )
+
+  (defhydra hydra-zoom (nil nil)
+    "zoom2"
+    ("g" text-scale-increase "in")
+    ("l" text-scale-decrease "out"))
+#+end_src
+
 *** Misc
 #+begin_src elisp :tangle packages.el
      (setq org-todo-keyword-faces
