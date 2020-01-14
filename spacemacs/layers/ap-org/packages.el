@@ -148,12 +148,13 @@
 (defhydra hydra-organizer (nil nil)
 "
 ^Navigate^      ^Agenda^          ^Go To^
-^^^^^^^--------------------------------------------
+^^^^^^^------------------------------------------------
 _k_: ↑ previous _t_: All Todos    _g i_: Inbox
-_j_: ↓ next
+_j_: ↓ next                       _g s_: Layer config
 "
   ("t" org-todo-list)
   ("g i" (find-file-other-window org-default-inbox-file))
+  ("g s" (find-file-other-window (concat (getenv "DOCKERFILES_DIR") "/spacemacs/layers/ap-org/ap-org.org")))
   ("<up>" org-previous-visible-heading)
   ("<down>" org-next-visible-heading)
   ("k" org-previous-visible-heading)
