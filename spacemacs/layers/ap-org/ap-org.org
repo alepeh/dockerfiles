@@ -106,7 +106,7 @@ I want everything I work on today to have A, tomorrow gets B, next week C.
 Occassionally I also need D if its farther away. Everything else means someday, so it should sort last.
 #+begin_src elisp :tangle packages.el
 (setq org-lowest-priority ?D)
-(setq org-default-priority ?E)
+(setq org-default-priority ?D)
 #+end_src
 *** Capture templates
 #+begin_src elisp :tangle packages.el
@@ -191,7 +191,7 @@ This is not really specific to org-mode but to emacs in general, so it could be 
       (propertize "Wk"                  ; or e.g. "KW" in Germany
                   'font-lock-face 'font-lock-keyword-face))
 #+end_src
-*** Org-drill
+*** org-drill
 Flash-Cards and spaced-repetition for org-mode
 #+begin_src elisp :tangle packages.el
 (require 'org-drill)
@@ -244,6 +244,70 @@ See [[http://howardism.org/Technical/Emacs/getting-more-boxes-done.html][here]] 
     ("l" text-scale-decrease "out"))
 #+end_src
 
+*** org-download
+[[https://github.com/abo-abo/org-download][Github]]
+#+begin_src elisp :tangle packages.el
+    (require 'org-download)
+    ;; Drag-and-drop to `dired`
+    (add-hook 'dired-mode-hook 'org-download-enable)
+    ;; put all images in a directory
+    (setq org-download-method 'directory)
+    ;; Put all images here
+    (setq-default org-download-image-dir "data")
+    ;; which headline level to use for the download
+    (setq org-download-heading-lvl nil)
+
+    (setq org-download-screenshot-method "screencapture -i %s")
+    ;; Edit images
+    (setq org-download-edit-cmd "open -n -a Preview %s")
+  ;;  (setq org-download-abbreviate-filename-function 'file-relative-name)
+#+end_src
+*** Drag-Drop (only for reference)
+This is not tangled currently as I use the more powerful, but limited to images [[https://github.com/abo-abo/org-download][org-download]].
+#+begin_src elisp
+      ;;drag and drop configuration
+      ;; http://kitchingroup.cheme.cmu.edu/blog/2015/07/10/Drag-images-and-files-onto-org-mode-and-insert-a-link-to-them/
+      (defun my-dnd-func (event)
+  (interactive "e")
+  (goto-char (nth 1 (event-start event)))
+  (x-focus-frame nil)
+  (let* ((payload (car (last event)))
+         (type (car payload))
+         (fname (cadr payload))
+         (img-regexp "\\(png\\|jp[e]?g\\)\\>"))
+    (cond
+     ;; insert image link
+     ((and  (eq 'drag-n-drop (car event))
+            (eq 'file type)
+            (string-match img-regexp fname))
+      (insert (format "[[%s]]" fname))
+      (org-display-inline-images t t))
+     ;; insert image link with caption
+     ((and  (eq 'C-drag-n-drop (car event))
+            (eq 'file type)
+            (string-match img-regexp fname))
+      (insert "#+ATTR_ORG: :width 300\n")
+      (insert (concat  "#+CAPTION: " (read-input "Caption: ") "\n"))
+      (insert (format "[[%s]]" fname))
+      (org-display-inline-images t t))
+     ;; C-drag-n-drop to open a file
+     ((and  (eq 'C-drag-n-drop (car event))
+            (eq 'file type))
+      (find-file fname))
+     ((and (eq 'M-drag-n-drop (car event))
+           (eq 'file type))
+      (insert (format "[[attachfile:%s]]" fname)))
+     ;; regular drag and drop on file
+     ((eq 'file type)
+      (insert (format "[[%s]]\n" fname)))
+     (t
+      (error "I am not equipped for dnd on %s" payload)))))
+
+
+(define-key org-mode-map (kbd "<drag-n-drop>") 'my-dnd-func)
+(define-key org-mode-map (kbd "<C-drag-n-drop>") 'my-dnd-func)
+(define-key org-mode-map (kbd "<M-drag-n-drop>") 'my-dnd-func) 
+#+end_src
 *** Misc
 #+begin_src elisp :tangle packages.el
      (setq org-todo-keyword-faces
@@ -365,48 +429,6 @@ See [[http://howardism.org/Technical/Emacs/getting-more-boxes-done.html][here]] 
       (setq org-journal-date-format "%Y-%m-%d, %A")
       (setq org-journal-file-type 'yearly)
 
-      ;;drag and drop configuration
-      ;; http://kitchingroup.cheme.cmu.edu/blog/2015/07/10/Drag-images-and-files-onto-org-mode-and-insert-a-link-to-them/
-      (defun my-dnd-func (event)
-  (interactive "e")
-  (goto-char (nth 1 (event-start event)))
-  (x-focus-frame nil)
-  (let* ((payload (car (last event)))
-         (type (car payload))
-         (fname (cadr payload))
-         (img-regexp "\\(png\\|jp[e]?g\\)\\>"))
-    (cond
-     ;; insert image link
-     ((and  (eq 'drag-n-drop (car event))
-            (eq 'file type)
-            (string-match img-regexp fname))
-      (insert (format "[[%s]]" fname))
-      (org-display-inline-images t t))
-     ;; insert image link with caption
-     ((and  (eq 'C-drag-n-drop (car event))
-            (eq 'file type)
-            (string-match img-regexp fname))
-      (insert "#+ATTR_ORG: :width 300\n")
-      (insert (concat  "#+CAPTION: " (read-input "Caption: ") "\n"))
-      (insert (format "[[%s]]" fname))
-      (org-display-inline-images t t))
-     ;; C-drag-n-drop to open a file
-     ((and  (eq 'C-drag-n-drop (car event))
-            (eq 'file type))
-      (find-file fname))
-     ((and (eq 'M-drag-n-drop (car event))
-           (eq 'file type))
-      (insert (format "[[attachfile:%s]]" fname)))
-     ;; regular drag and drop on file
-     ((eq 'file type)
-      (insert (format "[[%s]]\n" fname)))
-     (t
-      (error "I am not equipped for dnd on %s" payload)))))
-
-
-(define-key org-mode-map (kbd "<drag-n-drop>") 'my-dnd-func)
-(define-key org-mode-map (kbd "<C-drag-n-drop>") 'my-dnd-func)
-(define-key org-mode-map (kbd "<M-drag-n-drop>") 'my-dnd-func) 
 #+end_src
 
 #+begin_src elisp :tangle packages.el
