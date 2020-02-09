@@ -2,6 +2,7 @@
 # Preconditions
 # emacs (tested with 26.3), installed via brew cask install emacs
 # java (for plantuml)
+# gnuplot (for plotting graphs from tables), installed vi brew install gnuplot
 # Clone the spacemacs development branch
 git clone --single-branch --branch develop git@github.com:syl20bnr/spacemacs.git ~/.emacs.d
 
