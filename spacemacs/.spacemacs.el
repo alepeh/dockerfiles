@@ -54,6 +54,7 @@ values."
      ;; syntax-checking
      ;; version-control
      ap-org
+     yaml
      theming
      (org :variables
       org-enable-org-journal-support t)
