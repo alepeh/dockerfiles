@@ -108,6 +108,14 @@ Occassionally I also need D if its farther away. Everything else means someday, 
 (setq org-lowest-priority ?D)
 (setq org-default-priority ?D)
 #+end_src
+**** Dependencies
+If tasks form a hierachy, the parent should not be marked as done until all children are done.
+This can be enforced by customizing the following var. If you also want to ensure that subtasks can only
+be completed in sequence, set the =:ORDERED:= property of the parent heading to =t=.
+#+begin_src elisp :tangle packages.el
+(setq org-enforce-todo-dependencies t)
+(setq org-agenda-dim-blocked-tasks t)
+#+end_src
 *** Capture templates
 #+begin_src elisp :tangle packages.el
 (defvar org-capture-templates (list))
@@ -227,9 +235,10 @@ See [[http://howardism.org/Technical/Emacs/getting-more-boxes-done.html][here]] 
   ^Navigate^      ^Agenda^          ^Go To^
   ^^^^^^^------------------------------------------------
   _k_: ↑ previous _t_: All Todos    _g i_: Inbox
-  _j_: ↓ next                       _g s_: Layer config
+  _j_: ↓ next     _s_: Schedule     _g s_: Layer config
   "
     ("t" org-todo-list)
+    ("s" org-schedule)
     ("g i" (find-file-other-window org-default-inbox-file))
     ("g s" (find-file-other-window (concat (getenv "DOCKERFILES_DIR") "/spacemacs/layers/ap-org/ap-org.org")))
     ("<up>" org-previous-visible-heading)

@@ -56,6 +56,9 @@
 (setq org-lowest-priority ?D)
 (setq org-default-priority ?D)
 
+(setq org-enforce-todo-dependencies t)
+(setq org-agenda-dim-blocked-tasks t)
+
 (defvar org-capture-templates (list))
 (setq org-capture-default-template "i")
 (add-to-list 'org-capture-templates
@@ -150,9 +153,10 @@
 ^Navigate^      ^Agenda^          ^Go To^
 ^^^^^^^------------------------------------------------
 _k_: ↑ previous _t_: All Todos    _g i_: Inbox
-_j_: ↓ next                       _g s_: Layer config
+_j_: ↓ next     _s_: Schedule     _g s_: Layer config
 "
   ("t" org-todo-list)
+  ("s" org-schedule)
   ("g i" (find-file-other-window org-default-inbox-file))
   ("g s" (find-file-other-window (concat (getenv "DOCKERFILES_DIR") "/spacemacs/layers/ap-org/ap-org.org")))
   ("<up>" org-previous-visible-heading)
