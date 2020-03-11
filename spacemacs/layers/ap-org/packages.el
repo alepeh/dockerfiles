@@ -303,5 +303,7 @@ _j_: ↓ next     _s_: Schedule     _g s_: Layer config
   (setq org-journal-dir spacemacs-workspace)
   (setq org-journal-date-format "%Y-%m-%d, %A")
   (setq org-journal-file-type 'yearly)
+  (setq org-journal-enable-agenda-integration t)
+  ;;(setq org-journal-carryover-items "")
 
 ) ;;ap-org/post-init-org ends here
