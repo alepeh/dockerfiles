@@ -43,6 +43,7 @@
 
 (spacemacs/set-leader-keys "oo" 'hydra-organizer/body)
 (spacemacs/set-leader-keys "oz" 'hydra-zoom/body)
+(spacemacs/set-leader-keys "oj" 'hydra-journal/body)
 
 (setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
 (setq org-agenda-files (list
@@ -169,6 +170,21 @@ _j_: ↓ next     _s_: Schedule     _g s_: Layer config
   "zoom2"
   ("g" text-scale-increase "in")
   ("l" text-scale-decrease "out"))
+
+(defhydra hydra-journal (nil nil)
+"
+^New^                      ^Navigate^        ^Search^
+^^^^^^^---------------------------------------------------------
+_n_: New entry             _k_: ↑ previous   _s_: Search 
+_N_: New scheduled entry   _j_: ↓ next       _S_: Search Future
+" 
+  ("n" org-journal-new-entry)
+  ("N" org-journal-new-scheduled-entry)
+  ("k" org-journal-open-previous-entry)
+  ("j" org-journal-open-next-entry)
+  ("s" org-journal-search)
+  ("S" org-search-future-scheduled)
+)
 
 (require 'org-download)
   ;; Drag-and-drop to `dired`
