@@ -90,14 +90,15 @@ Todos and scheduled entries.
 As they might be scattered all over the workspace, let's add all the files
 in the workspace.
 #+begin_src elisp :tangle packages.el
-(setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
-(setq org-agenda-files (list
-                          spacemacs-workspace
-                          )
-        org-agenda-default-appointment-duration 120
-        org-icalendar-combined-agenda-file (concat spacemacs-workspace "/agenda.ics")
-        org-attach-set-inherit t
-        )
+  (setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
+  (setq org-agenda-files (list
+                            spacemacs-workspace
+                            )
+          org-agenda-default-appointment-duration 120
+          org-icalendar-include-todo "all"
+          org-icalendar-combined-agenda-file (concat spacemacs-workspace "/shared/agenda.ics")
+          org-attach-set-inherit t
+          )
 #+end_src
 *** Todos configuration
 **** Priorities
@@ -259,6 +260,7 @@ See [[http://howardism.org/Technical/Emacs/getting-more-boxes-done.html][here]] 
   ^^^^^^^---------------------------------------------------------
   _n_: New entry             _k_: ↑ previous   _s_: Search 
   _N_: New scheduled entry   _j_: ↓ next       _S_: Search Future
+  ^ ^                        ^ ^               _t_: Tags View
   " 
     ("n" org-journal-new-entry)
     ("N" org-journal-new-scheduled-entry)
@@ -266,6 +268,7 @@ See [[http://howardism.org/Technical/Emacs/getting-more-boxes-done.html][here]] 
     ("j" org-journal-open-next-entry)
     ("s" org-journal-search)
     ("S" org-search-future-scheduled)
+    ("t" org-tags-view)
   )
 #+end_src
 
@@ -452,9 +455,11 @@ This is not tangled currently as I use the more powerful, but limited to images 
     (setq org-journal-file-format "%Y%m%d.org")
     (setq org-journal-dir spacemacs-workspace)
     (setq org-journal-date-format "%Y-%m-%d, %A")
-    (setq org-journal-file-type 'yearly)
-    (setq org-journal-enable-agenda-integration t)
-    ;;(setq org-journal-carryover-items "")
+    (setq org-journal-file-type 'daily)
+    ;; Agenda integration adds all current and future entries.
+    ;; I also want the past entries, so I simply add all org files to the agenda.
+    ;; (setq org-journal-enable-agenda-integration t)
+    (setq org-journal-carryover-items "")
 #+end_src
 
 #+begin_src elisp :tangle packages.el

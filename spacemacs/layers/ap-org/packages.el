@@ -50,7 +50,8 @@
                           spacemacs-workspace
                           )
         org-agenda-default-appointment-duration 120
-        org-icalendar-combined-agenda-file (concat spacemacs-workspace "/agenda.ics")
+        org-icalendar-include-todo "all"
+        org-icalendar-combined-agenda-file (concat spacemacs-workspace "/shared/agenda.ics")
         org-attach-set-inherit t
         )
 
@@ -177,6 +178,7 @@ _j_: ↓ next     _s_: Schedule     _g s_: Layer config
 ^^^^^^^---------------------------------------------------------
 _n_: New entry             _k_: ↑ previous   _s_: Search 
 _N_: New scheduled entry   _j_: ↓ next       _S_: Search Future
+^ ^                        ^ ^               _t_: Tags View
 " 
   ("n" org-journal-new-entry)
   ("N" org-journal-new-scheduled-entry)
@@ -184,6 +186,7 @@ _N_: New scheduled entry   _j_: ↓ next       _S_: Search Future
   ("j" org-journal-open-next-entry)
   ("s" org-journal-search)
   ("S" org-search-future-scheduled)
+  ("t" org-tags-view)
 )
 
 (require 'org-download)
@@ -318,8 +321,10 @@ _N_: New scheduled entry   _j_: ↓ next       _S_: Search Future
   (setq org-journal-file-format "%Y%m%d.org")
   (setq org-journal-dir spacemacs-workspace)
   (setq org-journal-date-format "%Y-%m-%d, %A")
-  (setq org-journal-file-type 'yearly)
-  (setq org-journal-enable-agenda-integration t)
-  ;;(setq org-journal-carryover-items "")
+  (setq org-journal-file-type 'daily)
+  ;; Agenda integration adds all current and future entries.
+  ;; I also want the past entries, so I simply add all org files to the agenda.
+  ;; (setq org-journal-enable-agenda-integration t)
+  (setq org-journal-carryover-items "")
 
 ) ;;ap-org/post-init-org ends here
