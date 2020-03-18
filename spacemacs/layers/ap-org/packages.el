@@ -325,6 +325,8 @@ _N_: New scheduled entry   _j_: ↓ next       _S_: Search Future
   ;; Agenda integration adds all current and future entries.
   ;; I also want the past entries, so I simply add all org files to the agenda.
   ;; (setq org-journal-enable-agenda-integration t)
-  (setq org-journal-carryover-items "")
+  ;; Carryover moved unfinished todos to the latest entry, even if that was scheduled for
+  ;; the future. Try again with the daily journal.
+  ;;(setq org-journal-carryover-items "")
 
 ) ;;ap-org/post-init-org ends here
