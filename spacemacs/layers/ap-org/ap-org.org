@@ -100,6 +100,12 @@ in the workspace.
           org-attach-set-inherit t
           )
 #+end_src
+*** Attachment configuration
+Use relative links when specifying the attachment dir
+#+begin_src elisp :tangle packages.el
+  (setq org-attach-dir-relative t)
+#+end_src
+
 *** Todos configuration
 **** Priorities
 By default there are only the priorities A,B,C.
@@ -203,9 +209,9 @@ This is not really specific to org-mode but to emacs in general, so it could be 
 #+end_src
 *** org-drill
 Flash-Cards and spaced-repetition for org-mode
-#+begin_src elisp :tangle packages.el
-(require 'org-drill)
-#+end_src
+;;#+begin_src elisp :tangle packages.el
+;;(require 'org-drill)
+;;#+end_src
 *** org-brain
 #+begin_src elisp :tangle packages.el
 (use-package org-brain :ensure t

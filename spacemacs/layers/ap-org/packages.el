@@ -55,6 +55,8 @@
         org-attach-set-inherit t
         )
 
+(setq org-attach-dir-relative t)
+
 (setq org-lowest-priority ?D)
 (setq org-default-priority ?D)
 
@@ -130,8 +132,6 @@
 (setq calendar-intermonth-header
       (propertize "Wk"                  ; or e.g. "KW" in Germany
                   'font-lock-face 'font-lock-keyword-face))
-
-(require 'org-drill)
 
 (use-package org-brain :ensure t
   :init
