@@ -54,6 +54,7 @@ values."
      ;; syntax-checking
      ;; version-control
      ap-org
+     org-roam
      yaml
      theming
      (org :variables

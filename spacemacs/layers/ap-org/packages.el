@@ -192,12 +192,12 @@ _N_: New scheduled entry   _j_: ↓ next       _S_: Search Future
 (require 'org-download)
   ;; Drag-and-drop to `dired`
   (add-hook 'dired-mode-hook 'org-download-enable)
-  ;; put all images in a directory
-  (setq org-download-method 'directory)
+  ;; use org-mode's attachment machinery
+  (setq org-download-method 'attach)
   ;; Put all images here
-  (setq-default org-download-image-dir "data")
+  ;;(setq-default org-download-image-dir "data")
   ;; which headline level to use for the download
-  (setq org-download-heading-lvl nil)
+  ;;(setq org-download-heading-lvl nil)
 
   (setq org-download-screenshot-method "screencapture -i %s")
   ;; Edit images
