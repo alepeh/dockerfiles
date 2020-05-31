@@ -11,6 +11,7 @@
     (require 'org-roam-protocol)
     (setq org-roam-completion-system 'helm)
     (setq org-roam-graph-viewer "/usr/bin/open")
+    (setq org-roam-graph-exclude-matcher "-journal")
     (progn
       (spacemacs/declare-prefix "ar" "org-roam")
       (spacemacs/set-leader-keys

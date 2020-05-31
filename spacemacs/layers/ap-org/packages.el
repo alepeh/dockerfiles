@@ -204,6 +204,8 @@ _N_: New scheduled entry   _j_: ↓ next       _S_: Search Future
   (setq org-download-edit-cmd "open -n -a Preview %s")
 ;;  (setq org-download-abbreviate-filename-function 'file-relative-name)
 
+(load-file "~/.emacs.d/org-recoll.el")
+
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "white" :weight bold)) ("STARTED" . "yellow")
         ("DONE" . (:foreground "green" :weight bold))))
@@ -318,7 +320,7 @@ _N_: New scheduled entry   _j_: ↓ next       _S_: Search Future
   (require 'org-tempo)
 
   ;; org-journal configuration
-  (setq org-journal-file-format "%Y%m%d.org")
+  (setq org-journal-file-format "%Y%m%d-journal.org")
   (setq org-journal-dir spacemacs-workspace)
   (setq org-journal-date-format "%Y-%m-%d, %A")
   (setq org-journal-file-type 'daily)

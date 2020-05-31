@@ -342,6 +342,10 @@ This is not tangled currently as I use the more powerful, but limited to images 
 (define-key org-mode-map (kbd "<C-drag-n-drop>") 'my-dnd-func)
 (define-key org-mode-map (kbd "<M-drag-n-drop>") 'my-dnd-func) 
 #+end_src
+*** org-recoll
+#+begin_src elisp :tangle packages.el
+(load-file "~/.emacs.d/org-recoll.el")
+#+end_src
 *** Misc
 #+begin_src elisp :tangle packages.el
    (setq org-todo-keyword-faces
@@ -458,7 +462,7 @@ This is not tangled currently as I use the more powerful, but limited to images 
     (require 'org-tempo)
 
     ;; org-journal configuration
-    (setq org-journal-file-format "%Y%m%d.org")
+    (setq org-journal-file-format "%Y%m%d-journal.org")
     (setq org-journal-dir spacemacs-workspace)
     (setq org-journal-date-format "%Y-%m-%d, %A")
     (setq org-journal-file-type 'daily)
