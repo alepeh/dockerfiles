@@ -190,19 +190,19 @@ _N_: New scheduled entry   _j_: ↓ next       _S_: Search Future
 )
 
 (require 'org-download)
-  ;; Drag-and-drop to `dired`
-  (add-hook 'dired-mode-hook 'org-download-enable)
-  ;; use org-mode's attachment machinery
-  (setq org-download-method 'attach)
-  ;; Put all images here
-  ;;(setq-default org-download-image-dir "data")
-  ;; which headline level to use for the download
-  ;;(setq org-download-heading-lvl nil)
+;; Drag-and-drop to `dired`
+(add-hook 'dired-mode-hook 'org-download-enable)
+;; don't use org-mode's attachment machinery as links are broken when published
+(setq org-download-method 'directory)
+;; Put all images here
+(setq-default org-download-image-dir "data")
+;; which headline level to use for the download
+(setq org-download-heading-lvl nil)
 
-  (setq org-download-screenshot-method "screencapture -i %s")
-  ;; Edit images
-  (setq org-download-edit-cmd "open -n -a Preview %s")
-;;  (setq org-download-abbreviate-filename-function 'file-relative-name)
+(setq org-download-screenshot-method "screencapture -i %s")
+;; Edit images
+(setq org-download-edit-cmd "open -n -a Preview %s")
+(setq org-download-abbreviate-filename-function 'file-relative-name)
 
 (load-file "~/.emacs.d/org-recoll.el")
 
@@ -258,17 +258,18 @@ _N_: New scheduled entry   _j_: ↓ next       _S_: Search Future
       '(
   ("all-org-files-to-html"
          ;; Path to your org files.
-         :base-directory spacemacs-workspace 
-         :base-extension "org"
-         :publishing-function org-html-publish-to-html
-         :publishing-directory (concat spacemacs-workspace "/exports/")
-  )
-        ("all-org-attachments"
-         :base-directory (concat spacemacs-workspace "/data/")
-         :base-extension "css\\|js\\|png\\|jpeg\\|jpg\\|gif\\|pdf\\|mp3\\|ogg"
-         :publishing-directory (concat spacemacs-workspace "/exports/data/")
-         :recursive t
-         :publishing-function org-publish-attachment)
+       :base-directory "ORG_DIRECTORY" 
+       :base-extension "org"
+       :publishing-function org-html-publish-to-html
+       :publishing-directory "PUBLISH_DIRECTORY"
+       :exclude ".-journal.org"
+)
+      ("all-org-attachments"
+       :base-directory "ORG_DIRECTORY/data/"
+       :base-extension "css\\|js\\|png\\|jpeg\\|jpg\\|gif\\|pdf\\|mp3\\|ogg"
+       :publishing-directory "PUBLISH_DIRECTORY/data/"
+       :recursive t
+       :publishing-function org-publish-attachment)
         ("all-org-and-attachments" :components ("all-org-files-to-html" "all-org-attachments"))
         ("rfk-jekyll-html"
          ;; Path to your org files.
