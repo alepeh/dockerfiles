@@ -12,6 +12,7 @@
     (setq org-roam-completion-system 'helm)
     (setq org-roam-graph-viewer "/usr/bin/open")
     (setq org-roam-graph-exclude-matcher "-journal")
+    (setq org-roam-graph-executable "/usr/local/bin/neato")
     (progn
       (spacemacs/declare-prefix "ar" "org-roam")
       (spacemacs/set-leader-keys

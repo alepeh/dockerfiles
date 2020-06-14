@@ -296,6 +296,10 @@ See [[http://howardism.org/Technical/Emacs/getting-more-boxes-done.html][here]] 
     (setq org-download-edit-cmd "open -n -a Preview %s")
     (setq org-download-abbreviate-filename-function 'file-relative-name)
 #+end_src
+
+#+RESULTS:
+: file-relative-name
+
 *** Drag-Drop (only for reference)
 This is not tangled currently as I use the more powerful, but limited to images [[https://github.com/abo-abo/org-download][org-download]].
 #+begin_src elisp
@@ -345,6 +349,11 @@ This is not tangled currently as I use the more powerful, but limited to images 
 *** org-recoll
 #+begin_src elisp :tangle packages.el
 (load-file "~/.emacs.d/org-recoll.el")
+#+end_src
+*** ox-confluence
+#+begin_src elisp :tangle packages.el
+  (load-file "~/.emacs.d/ox-confluence-en.el")
+  (setq ox-confluence-en-use-plantuml-macro t)
 #+end_src
 *** Misc
 #+begin_src elisp :tangle packages.el

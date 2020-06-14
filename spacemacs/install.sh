@@ -45,5 +45,8 @@ cp -r ./layers/org-roam ~/.emacs.d/private/org-roam
 # Copy the emacs launch script for use with e.g. platypus
 cp ./launch_emacs.sh ~/.emacs.d/
 
+cp ./org-recoll.el  ~/.emacs.d/
+cp ./ox-confluence-en.el ~/.emacs.d/
+
 # After starting emacs for the first time, you may need to run the following command:
 # find ~/.emacs.d -name '*.elc' -delete

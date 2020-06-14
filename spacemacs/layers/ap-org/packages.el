@@ -206,6 +206,9 @@ _N_: New scheduled entry   _j_: ↓ next       _S_: Search Future
 
 (load-file "~/.emacs.d/org-recoll.el")
 
+(load-file "~/.emacs.d/ox-confluence-en.el")
+(setq ox-confluence-en-use-plantuml-macro t)
+
 (setq org-todo-keyword-faces
       '(("TODO" . (:foreground "white" :weight bold)) ("STARTED" . "yellow")
         ("DONE" . (:foreground "green" :weight bold))))
