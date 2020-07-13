@@ -63,6 +63,9 @@
 (setq org-enforce-todo-dependencies t)
 (setq org-agenda-dim-blocked-tasks t)
 
+(setq org-todo-keywords
+      '((sequence "TODO" "NEXT" "WAIT" "|" "DONE" "DELEGATED")))
+
 (defvar org-capture-templates (list))
 (setq org-capture-default-template "i")
 (add-to-list 'org-capture-templates

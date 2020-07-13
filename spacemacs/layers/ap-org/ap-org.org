@@ -121,8 +121,15 @@ If tasks form a hierachy, the parent should not be marked as done until all chil
 This can be enforced by customizing the following var. If you also want to ensure that subtasks can only
 be completed in sequence, set the =:ORDERED:= property of the parent heading to =t=.
 #+begin_src elisp :tangle packages.el
-(setq org-enforce-todo-dependencies t)
-(setq org-agenda-dim-blocked-tasks t)
+  (setq org-enforce-todo-dependencies t)
+  (setq org-agenda-dim-blocked-tasks t)
+#+end_src
+**** Workflow states
+The vertical bar separates the TODO keywords (states that need action) from the DONE states (which need no further action). 
+If you do not provide the separator bar, the last state is used as the DONE state. 
+#+begin_src elisp :tangle packages.el
+(setq org-todo-keywords
+      '((sequence "TODO" "NEXT" "WAIT" "|" "DONE" "DELEGATED")))
 #+end_src
 *** Capture templates
 #+begin_src elisp :tangle packages.el
