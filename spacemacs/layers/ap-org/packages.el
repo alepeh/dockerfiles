@@ -55,6 +55,23 @@
         org-attach-set-inherit t
         )
 
+(setq org-agenda-custom-commands
+      '(("c" "Alex's composite agenda view"
+         ((todo "NEXT"
+                ((org-agenda-overriding-header "Next actions:")))
+          (agenda ""
+                ((org-agenda-span 7)
+                (org-agenda-start-day "-1d")
+                (org-agenda-start-on-weekday nil)))
+          (todo "WAIT"
+                ((org-agenda-overriding-header "Waiting for:")))
+          (alltodo ""
+                ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("NEXT" "WAIT"))))
+          )))
+         ("r" tags-todo "+rfk")
+         ("g" tags-todo "+@gerhard")
+))
+
 (setq org-attach-dir-relative t)
 
 (setq org-lowest-priority ?D)
