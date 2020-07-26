@@ -90,7 +90,7 @@ Todos and scheduled entries.
 As they might be scattered all over the workspace, let's add all the files
 in the workspace.
 #+begin_src elisp :tangle packages.el
-  (setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
+ ;; (setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
   (setq org-agenda-files (list
                             spacemacs-workspace
                             )
@@ -118,6 +118,15 @@ in the workspace.
          ("r" tags-todo "+rfk")
          ("g" tags-todo "+@gerhard")
 ))
+#+end_src
+*** Agenda iCal export
+Include sccheduled TODOs as calendar events, config taken from: 
+https://github.com/dengste/org-caldav/issues/33
+#+begin_src elisp :tangle packages.el
+(setq org-icalendar-include-todo t
+      org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due)
+      org-icalendar-use-scheduled '(event-if-todo event-if-not-todo todo-start)
+      org-icalendar-with-timestamps t)
 #+end_src
 *** Attachment configuration
 Use relative links when specifying the attachment dir

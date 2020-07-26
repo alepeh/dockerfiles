@@ -45,15 +45,15 @@
 (spacemacs/set-leader-keys "oz" 'hydra-zoom/body)
 (spacemacs/set-leader-keys "oj" 'hydra-journal/body)
 
-(setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
-(setq org-agenda-files (list
-                          spacemacs-workspace
-                          )
-        org-agenda-default-appointment-duration 120
-        org-icalendar-include-todo "all"
-        org-icalendar-combined-agenda-file (concat spacemacs-workspace "/shared/agenda.ics")
-        org-attach-set-inherit t
-        )
+;; (setq org-agenda-file-regexp "\\`\\\([^.].*\\.org\\\|[0-9]\\\{8\\\}\\\(\\.gpg\\\)?\\\)\\'")
+ (setq org-agenda-files (list
+                           spacemacs-workspace
+                           )
+         org-agenda-default-appointment-duration 120
+         org-icalendar-include-todo "all"
+         org-icalendar-combined-agenda-file (concat spacemacs-workspace "/shared/agenda.ics")
+         org-attach-set-inherit t
+         )
 
 (setq org-agenda-custom-commands
       '(("c" "Alex's composite agenda view"
@@ -71,6 +71,11 @@
          ("r" tags-todo "+rfk")
          ("g" tags-todo "+@gerhard")
 ))
+
+(setq org-icalendar-include-todo t
+      org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due)
+      org-icalendar-use-scheduled '(event-if-todo event-if-not-todo todo-start)
+      org-icalendar-with-timestamps t)
 
 (setq org-attach-dir-relative t)
 
