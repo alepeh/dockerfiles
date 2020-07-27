@@ -93,12 +93,27 @@
 (add-to-list 'org-capture-templates
              `("i" "Inbox from nowhere"        entry
                (file ,org-default-inbox-file)
-               "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:"
+               "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:"
                :empty-lines 0))
 (add-to-list 'org-capture-templates
-             `("r" "Inbox with back-ref"        entry
+             `("I" "Inbox with back-ref"        entry
                (file ,org-default-inbox-file)
-               "* %?\n:PROPERTIES:\n:CREATED:%U\n:END:\n\n%i\nFrom: %a"
+               "* %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%i\nFrom: %a"
+               :empty-lines 0))
+(add-to-list 'org-capture-templates
+             `("t" "Task from nowhere"        entry
+               (file ,org-default-tasks-file)
+               "* TODO %? %^G \n:PROPERTIES:\n:CREATED: %U\n:END:"
+               :empty-lines 0))
+(add-to-list 'org-capture-templates
+             `("T" "Task with back-ref"        entry
+               (file ,org-default-tasks-file)
+               "* TODO %? %^G \n:PROPERTIES:\n:CREATED: %U\n:END:\n\n%i\nFrom: %a"
+               :empty-lines 0))
+(add-to-list 'org-capture-templates
+             `("p" "Project"        entry
+               (file ,org-default-tasks-file)
+               "* %? %^G \n:PROPERTIES:\n:CREATED: %U\n:CATEGORY: %^{Name}\n:END:"
                :empty-lines 0))
 
 (setq org-refile-use-outline-path 'file
