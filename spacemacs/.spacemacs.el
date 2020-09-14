@@ -321,7 +321,7 @@ you should place your code here."
   ;; Deft settings
   (setq deft-directory (getenv "SPACEMACS_WORKSPACE"))
   (setq deft-use-filter-string-for-filename t)
-  (deft)
+  (server-start)
 )
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
