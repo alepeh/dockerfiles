@@ -54,11 +54,11 @@ values."
      ;; syntax-checking
      ;; version-control
      ap-org
-     org-roam
      yaml
      theming
      (org :variables
-      org-enable-org-journal-support t)
+          org-enable-org-journal-support t
+          org-enable-roam-support t)
     )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -323,6 +323,7 @@ you should place your code here."
   (setq deft-use-filter-string-for-filename t)
   (setq deft-use-filename-as-title nil)
   (server-start)
+  (deft)
 )
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.

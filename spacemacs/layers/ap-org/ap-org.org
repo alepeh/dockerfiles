@@ -115,9 +115,16 @@ in the workspace.
           (alltodo ""
                 ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("NEXT" "WAIT"))))
           )))
-         ("r" tags-todo "+rfk")
          ("g" tags-todo "+@gerhard")
 ))
+#+end_src
+
+The following is a function that can e.g. be bound directly to a key, so we don't need to
+go through the agenda dispatcher first.
+#+begin_src elisp :tangle packages.el
+(defun org-agenda-composite-view (&optional arg)
+  (interactive "P")
+  (org-agenda arg "c"))
 #+end_src
 *** Agenda iCal export
 Include sccheduled TODOs as calendar events, config taken from: 
@@ -156,8 +163,8 @@ be completed in sequence, set the =:ORDERED:= property of the parent heading to 
 The vertical bar separates the TODO keywords (states that need action) from the DONE states (which need no further action). 
 If you do not provide the separator bar, the last state is used as the DONE state. 
 #+begin_src elisp :tangle packages.el
-(setq org-todo-keywords
-      '((sequence "TODO" "NEXT" "WAIT" "|" "DONE" "DELEGATED")))
+  (setq org-todo-keywords
+        '((sequence "NEXT" "TODO" "WAIT" "|" "DONE" "DELEGATED")))
 #+end_src
 *** Capture templates
 #+begin_src elisp :tangle packages.el
@@ -200,29 +207,29 @@ The first two variable changes are necessary to allow refiling to top-level dest
 #+end_src
 *** Layout configuration
 #+begin_src elisp :tangle packages.el
-    ;; indent text corresponding with the headline
-    (setq org-startup-indented t)
-    ;; hides leading/trailing formatting characters like *bold*, /italic/, =code=
-    (setq org-hide-emphasis-markers t)
-    ;; use bullet points for all headline levels
-    (setq org-bullets-bullet-list '("○" "○" "○" "○"))
-    ;; font face and color, make sure you have the fonts installed.
-    (let* ((variable-tuple (cond ((x-list-fonts "Source Sans Variable") '(:font "Source Sans Variable"))
-                               (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Variable."))))
-          (base-font-color     (face-foreground 'default nil 'default))
-          (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
-    ;; deeper levels of headlines are smaller
-    (custom-theme-set-faces 'user
-                            `(org-level-8 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-7 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-6 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-5 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-                            `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.2))))
-                            `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3))))
-                            `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.4))))
-                            `(org-document-title ((t (,@headline ,@variable-tuple :height 1.3 :underline nil))))
-                            '(deft-title-face ((t (:inherit default :weight bold))))))
+  ;; indent text corresponding with the headline
+  (setq org-startup-indented t)
+  ;; hides leading/trailing formatting characters like *bold*, /italic/, =code=
+  (setq org-hide-emphasis-markers t)
+  ;; use bullet points for all headline levels
+  (setq org-bullets-bullet-list '("○" "○" "○" "○"))
+  ;; font face and color, make sure you have the fonts installed.
+  (let* ((variable-tuple (cond ((x-list-fonts "Source Sans Variable") '(:font "Source Sans Variable"))
+                             (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Variable."))))
+        (base-font-color     (face-foreground 'default nil 'default))
+        (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
+  ;; deeper levels of headlines are smaller
+  (custom-theme-set-faces 'user
+                          `(org-level-8 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-7 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-6 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-5 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+                          `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.15))))
+                          `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.2))))
+                          `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.3))))
+                          `(org-document-title ((t (,@headline ,@variable-tuple :height 1.3 :underline nil))))
+                          '(deft-title-face ((t (:inherit default :weight bold))))))
 #+end_src
 *** Babel configuration
 #+begin_src elisp :tangle packages.el 
@@ -290,19 +297,25 @@ See [[http://howardism.org/Technical/Emacs/getting-more-boxes-done.html][here]] 
 #+begin_src elisp :tangle packages.el 
   (defhydra hydra-organizer (nil nil)
   "
-  ^Navigate^      ^Agenda^          ^Go To^
-  ^^^^^^^------------------------------------------------
-  _k_: ↑ previous _t_: All Todos    _g i_: Inbox
-  _j_: ↓ next     _s_: Schedule     _g s_: Layer config
+  ^Navigate^     ^Move^         ^Agenda^        ^Go To^
+  ^^^^^^^---------------------------------------------------------
+  _↑_: previous  _h_ : Promote  _a_: Agenda     _g t_: Tasks 
+  _↓_: next      _l_ : Demote   _s_: Schedule   _g i_: Inbox
+               _k_ : Up       _t_: Sort Todo  _g s_: Layer Config
+               _j_ : Down
   "
-    ("t" org-todo-list)
+    ("t" my/org-sort-entries)
     ("s" org-schedule)
     ("g i" (find-file-other-window org-default-inbox-file))
     ("g s" (find-file-other-window (concat (getenv "DOCKERFILES_DIR") "/spacemacs/layers/ap-org/ap-org.org")))
+    ("g t" (find-file-other-window org-default-tasks-file))
     ("<up>" org-previous-visible-heading)
     ("<down>" org-next-visible-heading)
-    ("k" org-previous-visible-heading)
-    ("j" org-next-visible-heading)
+    ("l" org-demote-subtree)
+    ("h" org-promote-subtree)
+    ("k" org-move-subtree-up)
+    ("j" org-move-subtree-down)
+    ("a" org-agenda-composite-view)
   )
 
   (defhydra hydra-zoom (nil nil)
