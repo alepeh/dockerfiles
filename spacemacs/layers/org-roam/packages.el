@@ -6,7 +6,8 @@
     :hook
     (after-init . org-roam-mode)
     :custom
-    (org-roam-directory (getenv "SPACEMACS_WORKSPACE"))
+    (defvar spacemacs-workspace        (getenv "SPACEMACS_WORKSPACE"))
+    (org-roam-directory spacemacs-workspace)
     :init
     (require 'org-roam-protocol)
     (setq org-roam-completion-system 'helm)
