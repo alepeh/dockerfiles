@@ -68,9 +68,12 @@
           (alltodo ""
                 ((org-agenda-skip-function '(org-agenda-skip-entry-if 'todo '("NEXT" "WAIT"))))
           )))
-         ("r" tags-todo "+rfk")
          ("g" tags-todo "+@gerhard")
 ))
+
+(defun org-agenda-composite-view (&optional arg)
+  (interactive "P")
+  (org-agenda arg "c"))
 
 (setq org-icalendar-include-todo t
       org-icalendar-use-deadline '(event-if-todo event-if-not-todo todo-due)
@@ -86,7 +89,7 @@
 (setq org-agenda-dim-blocked-tasks t)
 
 (setq org-todo-keywords
-      '((sequence "TODO" "NEXT" "WAIT" "|" "DONE" "DELEGATED")))
+      '((sequence "NEXT" "TODO" "WAIT" "|" "DONE" "DELEGATED")))
 
 (defvar org-capture-templates (list))
 (setq org-capture-default-template "i")
@@ -139,9 +142,9 @@
                         `(org-level-6 ((t (,@headline ,@variable-tuple))))
                         `(org-level-5 ((t (,@headline ,@variable-tuple))))
                         `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-                        `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.2))))
-                        `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.3))))
-                        `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.4))))
+                        `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.15))))
+                        `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.2))))
+                        `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.3))))
                         `(org-document-title ((t (,@headline ,@variable-tuple :height 1.3 :underline nil))))
                         '(deft-title-face ((t (:inherit default :weight bold))))))
 
@@ -192,19 +195,25 @@
 
 (defhydra hydra-organizer (nil nil)
 "
-^Navigate^      ^Agenda^          ^Go To^
-^^^^^^^------------------------------------------------
-_k_: ↑ previous _t_: All Todos    _g i_: Inbox
-_j_: ↓ next     _s_: Schedule     _g s_: Layer config
+^Navigate^     ^Move^         ^Agenda^        ^Go To^
+^^^^^^^---------------------------------------------------------
+_↑_: previous  _h_ : Promote  _a_: Agenda     _g t_: Tasks 
+_↓_: next      _l_ : Demote   _s_: Schedule   _g i_: Inbox
+             _k_ : Up       _t_: Sort Todo  _g s_: Layer Config
+             _j_ : Down
 "
-  ("t" org-todo-list)
+  ("t" my/org-sort-entries)
   ("s" org-schedule)
   ("g i" (find-file-other-window org-default-inbox-file))
   ("g s" (find-file-other-window (concat (getenv "DOCKERFILES_DIR") "/spacemacs/layers/ap-org/ap-org.org")))
+  ("g t" (find-file-other-window org-default-tasks-file))
   ("<up>" org-previous-visible-heading)
   ("<down>" org-next-visible-heading)
-  ("k" org-previous-visible-heading)
-  ("j" org-next-visible-heading)
+  ("l" org-demote-subtree)
+  ("h" org-promote-subtree)
+  ("k" org-move-subtree-up)
+  ("j" org-move-subtree-down)
+  ("a" org-agenda-composite-view)
 )
 
 (defhydra hydra-zoom (nil nil)

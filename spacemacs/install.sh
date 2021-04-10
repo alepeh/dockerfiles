@@ -33,6 +33,7 @@ git clone --single-branch --branch develop git@github.com:syl20bnr/spacemacs.git
 
 # Copy the plantuml binary (version 1.2019.13)
 cp ./plantuml.jar ~
+git clone --single-branch --branch master git@github.com:awslabs/aws-icons-for-plantuml.git ~/.plantuml_aws
 
 # Copy the spacemacs config file
 # By default, we are using the spacemacs-docker distribution, we need to switch to the default one for local installation
