@@ -31,7 +31,7 @@ RUN apt install -y ttf-mscorefonts-installer
 RUN apt install -y fonts-wqy-zenhei
 
 WORKDIR /home/node
-COPY package.json index.js ./
+COPY package.json index.js /home/node/
 RUN npm install
 EXPOSE 3000
 ENTRYPOINT ["node", "index.js"]
