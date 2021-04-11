@@ -19,7 +19,8 @@ app.post('/render', (req, res) => {
       carbone.render('./templates/' + templateFile, data, options, function(err, result){
         if (err) return console.log(err);
         fs.writeFileSync('/tmp/' + filename, result);
-        res.download('/tmp/' + filename);
+        const contentsBase64 = fs.readFileSync('/tmp/' + filename, {encoding: 'base64'});
+        res.send(contentsBase64);
       });
 })
 
