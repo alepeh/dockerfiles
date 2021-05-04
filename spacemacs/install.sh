@@ -28,6 +28,7 @@ fi
 zip -rq  $(eval date "+/tmp/.emacs.d_%Y-%m-%d-%H-%M-%S.zip") ~/.emacs.d
 # Remove the current .emacs.d directory
 rm -rf ~/.emacs.d
+rm -rf ~/.plantuml_aws
 # Clone the spacemacs development branch
 git clone --single-branch --branch develop git@github.com:syl20bnr/spacemacs.git ~/.emacs.d
 

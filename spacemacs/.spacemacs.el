@@ -34,6 +34,7 @@ values."
    '(
      html
      osx
+     (osx :variables osx-option-as 'none)
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -59,7 +60,8 @@ values."
      theming
      (org :variables
           org-enable-org-journal-support t
-          org-enable-roam-support t)
+          org-enable-roam-support t
+          org-roam-directory (getenv "SPACEMACS_WORKSPACE"))
     )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -306,7 +308,6 @@ before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   ;; Right option (alt) key should not be used as Meta key, so we can make chars like '~'
   (setq-default mac-right-option-modifier nil)
-  
   ;; Map deft to F8 key
   (global-set-key [f8] 'deft)
 )

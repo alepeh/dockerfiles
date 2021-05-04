@@ -3,6 +3,7 @@
 
 (defun org-roam/init-org-roam ()
   (use-package org-roam
+    :after org
     :hook
     (after-init . org-roam-mode)
     :custom

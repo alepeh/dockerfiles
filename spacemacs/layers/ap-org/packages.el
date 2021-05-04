@@ -122,7 +122,8 @@
 (setq org-refile-use-outline-path 'file
       org-outline-path-complete-in-steps nil)
 (setq org-refile-targets '((org-default-incubate-file :level . 0)
-                           (org-default-tasks-file :level . 0)))
+                           (org-default-tasks-file :level . 0)
+                           (org-agenda-files :maxlevel . 3)))
 
 ;; indent text corresponding with the headline
 (setq org-startup-indented t)
@@ -131,8 +132,8 @@
 ;; use bullet points for all headline levels
 (setq org-bullets-bullet-list '("○" "○" "○" "○"))
 ;; font face and color, make sure you have the fonts installed.
-(let* ((variable-tuple (cond ((x-list-fonts "Source Sans Variable") '(:font "Source Sans Variable"))
-                           (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Variable."))))
+(let* ((variable-tuple (cond ((x-list-fonts "Source Sans 3") '(:font "Source Sans 3"))
+                           (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans 3."))))
       (base-font-color     (face-foreground 'default nil 'default))
       (headline           `(:inherit default :weight bold :foreground ,base-font-color)))
 ;; deeper levels of headlines are smaller
