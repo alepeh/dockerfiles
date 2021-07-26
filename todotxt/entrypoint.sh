@@ -1,2 +1,2 @@
 #!/bin/sh
-todo.sh -d /home/user/.todo/config "$@"
+todo.sh -c -d /home/user/.todo/config "$@"
