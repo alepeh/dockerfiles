@@ -13,11 +13,6 @@
 # Files
 data.location=~/.task
 
-# UDAs
-# Taskwarrior to Apple Reminders sync
-uda.remindersId.type=string
-uda.remindersId.label="Reminders Id"
-
 # Color theme (uncomment one to use)
 #include /usr/local/Cellar/task/2.5.1/share/doc/task/rc/light-16.theme
 #include /usr/local/Cellar/task/2.5.1/share/doc/task/rc/light-256.theme
